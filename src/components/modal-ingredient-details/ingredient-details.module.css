@@ -16,3 +16,12 @@
     align-items: center;
     gap: 30px;
 }
+
+.card {
+    position: absolute;
+    left: 30%;
+    right: 0%;
+    top: 15%;
+    bottom: 0%;
+    width: 550px;
+}

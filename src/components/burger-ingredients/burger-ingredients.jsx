@@ -2,31 +2,12 @@ import React from 'react';
 import {Tab} from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientsStyle from './burger-ingredients.module.css';
 import BurgerIngredientsTab from '../burger-ingredients-tab/burger-ingredients-tab';
+import PropTypes from "prop-types";
+import {Data} from "../../utils/prop-types";
 
-function BurgerIngredients() {
+function BurgerIngredients(data) {
     const [currentTab, setCurrentTab] = React.useState('buns');
-    const url = 'https://norma.nomoreparties.space/api/ingredients';
-    const [data, setData] = React.useState<any>({
-        productData: [],
-        isLoading: true
-    })
-
-    React.useEffect(() => {
-        const getProductData = async () => {
-            fetch(url)
-                .then((res) => res.json())
-                .then((data) =>
-                    setData({productData: data.data, isLoading: false})
-                )
-                .catch(() => {
-                    setData({...data, isLoading: false});
-                });
-        }
-
-        getProductData();
-    }, [])
-
-    const setTab = (tab: any) => {
+    const setTab = (tab) => {
         setCurrentTab(tab);
 
         switch (tab) {
@@ -47,13 +28,13 @@ function BurgerIngredients() {
     };
 
 
-    const buns = data.productData.filter((item: any) => item.type === 'bun');
-    const sauces = data.productData.filter((item: any) => item.type === 'sauce');
-    const fillings = data.productData.filter((item: any) => item.type === 'main');
+    const buns = data.productData.filter((item) => item.type === 'bun');
+    const sauces = data.productData.filter((item) => item.type === 'sauce');
+    const fillings = data.productData.filter((item) => item.type === 'main');
 
-    const bunsRef = React.useRef<null | HTMLDivElement>(null);
-    const saucesRef = React.useRef<null | HTMLDivElement>(null);
-    const fillingsRef = React.useRef<null | HTMLDivElement>(null);
+    const bunsRef = React.useRef(null);
+    const saucesRef = React.useRef(null);
+    const fillingsRef = React.useRef(null);
 
     return (
         <div>
@@ -73,7 +54,7 @@ function BurgerIngredients() {
                 </Tab>
             </div>
 
-            <div className = {`${IngredientsStyle.tabscontent} custom-scroll`}>
+            <div className={`${IngredientsStyle.tabscontent} custom-scroll`}>
                 <BurgerIngredientsTab data={buns} sendRef={bunsRef}>Булки</BurgerIngredientsTab>
                 <BurgerIngredientsTab data={sauces} sendRef={saucesRef}>Соусы</BurgerIngredientsTab>
                 <BurgerIngredientsTab data={fillings} sendRef={fillingsRef}>Начинки</BurgerIngredientsTab>
@@ -83,3 +64,7 @@ function BurgerIngredients() {
 }
 
 export default BurgerIngredients;
+
+BurgerIngredients.propTypes = {
+    productData: PropTypes.arrayOf(PropTypes.shape(Data)).isRequired
+};

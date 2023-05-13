@@ -4,4 +4,10 @@
     flex-direction: column;
     justify-content: center;
     height: 100%;
+    position: absolute;
+    left: 30%;
+    right: 0%;
+    top: -5%;
+    bottom: 0%;
+    width: 550px;
 }

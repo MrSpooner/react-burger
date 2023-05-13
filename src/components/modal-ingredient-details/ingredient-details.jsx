@@ -1,11 +1,13 @@
 import React from 'react';
 import IngredientStyle from './ingredient-details.module.css';
 import PropTypes from "prop-types";
+import {Data} from "../../utils/prop-types";
 
-function IngredientDetails(data: any) {
+function IngredientDetails(data) {
+    debugger
     return (
-        <>
-            <p className="text text_type_main-large ml-15 mt-15">Детали ингредиента</p>
+        <div className={IngredientStyle.card}>
+            <p className="text text_type_main-large ml-5 mt-5">Детали ингредиента</p>
             <div className={IngredientStyle.elements}>
                 <img src={data.data.image_large}/>
                 <p className="text text_type_main-medium">{data.data.name}</p>
@@ -36,23 +38,14 @@ function IngredientDetails(data: any) {
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     );
 }
 
 export default IngredientDetails;
 
 IngredientDetails.propTypes = {
-    data: {
-        data: PropTypes.shape({
-            image_large: PropTypes.string.isRequired,
-            name: PropTypes.string.isRequired,
-            carbohydrates: PropTypes.number.isRequired,
-            fat: PropTypes.number.isRequired,
-            proteins: PropTypes.number.isRequired,
-            calories: PropTypes.number.isRequired,
-        })
-    },
+    data: PropTypes.shape(Data).isRequired
 };
 
 
