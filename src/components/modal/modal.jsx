@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ModalOverlay from "../modal-overlay/modal-overlay";
 import PropTypes from "prop-types";
+import Style from './modal.module.css'
 
 const ESC_KEYCODE = 27
 
@@ -24,6 +25,10 @@ function Modal(data) {
 
     return ReactDOM.createPortal(
         (<div>
+            <div onClick={(e) => e.stopPropagation()}>
+                <div className={Style.wrapper} onClick={() => {data.closeModal()}}></div>
+            </div>
+
             <ModalOverlay closeModal={data.closeModal}/>
             {data.children}
         </div>),

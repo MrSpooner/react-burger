@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 import {Data} from "../../utils/prop-types";
 
 function IngredientDetails(data) {
-    debugger
     return (
         <div className={IngredientStyle.card}>
             <p className="text text_type_main-large ml-5 mt-5">Детали ингредиента</p>

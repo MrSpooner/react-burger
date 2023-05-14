@@ -19,10 +19,10 @@ function BurgerConstructor(data) {
     }
 
     return (
-        <div>
-            <div className={`${Items.element} mt-25 custom-scroll`}>
-                <ConstructorItem data={data.productData[0]} type='top'/>
+        <div className={`${Items.element} mt-25`}>
+            <ConstructorItem data={data.productData[0]} type='top'/>
 
+            <div className={`${Items.ingredients} custom-scroll`}>
                 {data.productData.slice(1).map((item, index) => {
                     return (
                         <div key={index}>
@@ -30,21 +30,21 @@ function BurgerConstructor(data) {
                         </div>
                     )
                 })}
+            </div>
 
-                <ConstructorItem data={data.productData[0]} type='bottom'/>
+            <ConstructorItem data={data.productData[0]} type='bottom'/>
 
-                <div className={Items.ordering}>
-                    <span className='text text_type_main-medium mr-2'>610</span>
-                    <CurrencyIcon type="primary"/>
-                    <Button htmlType="button" type="primary" size="medium" extraClass="ml-10" onClick={onClick}>
-                        Оформить заказ
-                    </Button>
-                    {isModal && (
-                        <Modal closeModal={closeModal}>
-                            <OrderDetails/>
-                        </Modal>
-                    )}
-                </div>
+            <div className={Items.ordering}>
+                <span className='text text_type_main-medium mr-2'>610</span>
+                <CurrencyIcon type="primary"/>
+                <Button htmlType="button" type="primary" size="medium" extraClass="ml-10" onClick={onClick}>
+                    Оформить заказ
+                </Button>
+                {isModal && (
+                    <Modal closeModal={closeModal}>
+                        <OrderDetails/>
+                    </Modal>
+                )}
             </div>
         </div>
     );
