@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import ModalOverlay from "../modal-overlay/modal-overlay";
 import PropTypes from "prop-types";
 import Style from './modal.module.css'
+import {CloseIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 
 const ESC_KEYCODE = 27
 
@@ -24,12 +25,17 @@ function Modal(data) {
     }, [onKeyDown]);
 
     return ReactDOM.createPortal(
-        (<div>
-            <div onClick={(e) => e.stopPropagation()}>
-                <div className={Style.wrapper} onClick={() => {data.closeModal()}}></div>
+        (<div onClick={(e) => e.stopPropagation()}>
+            <div onClick={data.closeModal}>
+                <ModalOverlay/>
             </div>
 
-            <ModalOverlay closeModal={data.closeModal}/>
+            <div className={Style.background}>
+                <div className={Style.close}>
+                    <CloseIcon type="primary" onClick={data.closeModal} className={Style.close}/>
+                </div>
+            </div>
+
             {data.children}
         </div>),
         modal
