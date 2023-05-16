@@ -1,0 +1,20 @@
+.element {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    height: 912px;
+}
+
+.ingredients {
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    gap: 10px;
+    scrollbar-gutter: stable both-edges;
+}
+
+.ordering {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}

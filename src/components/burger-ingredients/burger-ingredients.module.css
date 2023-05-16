@@ -1,0 +1,8 @@
+.tabs {
+    display: flex;
+}
+
+.tabscontent {
+    overflow-y: scroll;
+    height: 912px;
+}

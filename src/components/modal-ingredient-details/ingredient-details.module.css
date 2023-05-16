@@ -1,0 +1,28 @@
+.stats{
+    display: flex;
+    gap: 30px;
+}
+
+.stat{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.elements{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+}
+
+.card {
+    position: absolute;
+    left: 30%;
+    right: 0%;
+    top: 15%;
+    bottom: 0%;
+    width: 550px;
+    height: 450px;
+}

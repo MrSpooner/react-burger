@@ -1,0 +1,17 @@
+.close {
+    position: absolute;
+    right: 40px;
+    top: 60px;
+}
+
+.background {
+    position: absolute;
+    left: 25%;
+    right: 0%;
+    top: 10%;
+    bottom: 0%;
+    height: 539px;
+    width: 720px;
+    border-radius: 40px;
+    background-color: #1C1C21;
+}
