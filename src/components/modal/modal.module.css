@@ -1,16 +1,18 @@
 .close {
-    position: absolute;
-    right: 40px;
-    top: 60px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -200px;
+    margin-left: 300px;
 }
 
 .background {
-    position: absolute;
-    left: 25%;
-    right: 0%;
-    top: 10%;
-    bottom: 0%;
-    height: 539px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -270px;
+    margin-left: -360px;
+    height: 540px;
     width: 720px;
     border-radius: 40px;
     background-color: #1C1C21;

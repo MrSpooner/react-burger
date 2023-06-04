@@ -1,0 +1,19 @@
+.icon {
+    width: 240px;
+    height: 120px;
+}
+
+.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+}
+
+.price {
+    display: flex;
+    justify-content: center;
+    gap: 8px
+}
