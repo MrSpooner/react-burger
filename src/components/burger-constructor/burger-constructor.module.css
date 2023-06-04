@@ -18,3 +18,10 @@
     justify-content: end;
     align-items: center;
 }
+
+.empty{
+    background-color: #282c34;
+    border-radius: 40px;
+    min-width: 400px;
+    min-height: 400px;
+}

@@ -17,7 +17,6 @@ function Header() {
                 </div>
             </div>
 
-
             <div className={HeaderStyle.logo}>
                 <Logo/>
             </div>
