@@ -26,9 +26,7 @@ function Modal(data) {
 
     return ReactDOM.createPortal(
         (<div onClick={(e) => e.stopPropagation()}>
-            <div onClick={data.closeModal}>
-                <ModalOverlay/>
-            </div>
+            <ModalOverlay closeModal = {data.closeModal}/>
 
             <div className={Style.background}>
                 <div className={Style.close}>

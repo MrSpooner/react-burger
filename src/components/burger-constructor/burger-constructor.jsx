@@ -4,13 +4,21 @@ import Items from './burger-constructor.module.css';
 import {Button, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from "../modal/modal";
 import OrderDetails from '../modal-order-details/order-details'
-import PropTypes from "prop-types";
-import {Data} from "../../utils/prop-types";
+import {useSelector, useDispatch} from 'react-redux';
+import {nanoid} from '@reduxjs/toolkit';
+import {ADD_BUNS, ADD_ITEMS} from "../../services/actions/orderConstructor";
+import {useDrop} from "react-dnd";
+import {getOrder} from "../../services/actions/order";
 
-function BurgerConstructor(data) {
+function BurgerConstructor() {
     const [isModal, setModal] = React.useState(false);
+    const dispatch = useDispatch();
+    const orderNumber = useSelector(store => store.order.number);
+    const constructorItems = useSelector(store => store.orderConstructor.constructorItems);
+    const bun = useSelector(store => store.orderConstructor.bun);
 
     const onClick = () => {
+        dispatch(getOrder(ingredientsId));
         setModal(true);
     }
 
@@ -18,40 +26,96 @@ function BurgerConstructor(data) {
         setModal(false);
     }
 
+    const addItem = (item) => {
+        const ingredient = {item, id: nanoid()};
+        const type = item.type;
+
+        if (type === "bun") {
+            dispatch({type: ADD_BUNS, bun: item})
+        } else {
+            dispatch({type: ADD_ITEMS, constructorItems: ingredient})
+        }
+    };
+
+    const price = React.useMemo(() => {
+        let result = 0;
+
+        if (bun) {
+            result = bun.price + bun.price;
+        }
+
+        if (constructorItems) {
+            constructorItems.forEach((item) => {
+                result += item.item.price;
+            });
+        }
+
+        return result;
+    }, [bun, constructorItems]);
+
+    const dropConf = {
+        accept: "ingredients",
+        drop(item) {
+            addItem(item);
+        },
+    };
+
+    const [, itemsDrop] = useDrop(dropConf);
+    const [, emptyDrop] = useDrop(dropConf);
+
+    const ingredientsId = React.useMemo(() => {
+        let constructorItemsIds = [];
+
+        constructorItemsIds.push(bun._id);
+
+        constructorItems.forEach((item) => {
+            constructorItemsIds.push(item.item._id);
+        });
+
+        return constructorItemsIds;
+    }, [bun, constructorItems]);
+
     return (
-        <div className={`${Items.element} mt-25`}>
-            <ConstructorItem data={data.productData[0]} type='top'/>
+        <div className={`${Items.element} mt-25`} ref={itemsDrop}>
+            {Object.keys(bun).length === 0 && Object.keys(constructorItems).length === 0 && (
+                <div ref={emptyDrop}>
+                    <div className={Items.empty}></div>
+                </div>
+            )}
+
+            {Object.keys(bun).length !== 0 && (
+                <ConstructorItem data={bun} type='top'/>
+            )}
 
             <div className={`${Items.ingredients} custom-scroll`}>
-                {data.productData.slice(1).map((item, index) => {
-                    return (
-                        <div key={index}>
-                            <ConstructorItem data={item}/>
-                        </div>
-                    )
-                })}
+                {Object.keys(constructorItems).length !== 0 && constructorItems.map((item, index) => (
+                    <ConstructorItem data={item.item} index={index} key={item.id} myId={item.id}/>
+                ))
+                }
             </div>
 
-            <ConstructorItem data={data.productData[0]} type='bottom'/>
+            {Object.keys(bun).length !== 0 && (
+                <ConstructorItem data={bun} type='bottom'/>
+            )}
 
-            <div className={Items.ordering}>
-                <span className='text text_type_main-medium mr-2'>610</span>
-                <CurrencyIcon type="primary"/>
-                <Button htmlType="button" type="primary" size="medium" extraClass="ml-10" onClick={onClick}>
-                    Оформить заказ
-                </Button>
-                {isModal && (
-                    <Modal closeModal={closeModal}>
-                        <OrderDetails/>
-                    </Modal>
-                )}
-            </div>
+            {(price > 0) && (
+                <div className={Items.ordering}>
+                    <span className='text text_type_main-medium mr-2'>{price}</span>
+                    <CurrencyIcon type="primary"/>
+                    <Button htmlType="button" type="primary" size="medium" extraClass="ml-10" onClick={onClick}>
+                        Оформить заказ
+                    </Button>
+
+                </div>
+            )}
+
+            {isModal && (
+                <Modal closeModal={closeModal}>
+                    <OrderDetails orderNumber={orderNumber}/>
+                </Modal>
+            )}
         </div>
     );
 }
 
 export default BurgerConstructor;
-
-BurgerConstructor.propTypes = {
-    productData: PropTypes.arrayOf(PropTypes.shape(Data)).isRequired
-};

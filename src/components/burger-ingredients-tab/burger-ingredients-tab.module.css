@@ -1,19 +1,6 @@
-.card {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 50%;
-}
-
 .stack {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     flex-flow: row wrap;
-}
-
-.price {
-    display: flex;
-    justify-content: center;
-    gap: 8px
 }

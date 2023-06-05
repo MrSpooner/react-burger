@@ -1,49 +1,43 @@
 import React from 'react';
-import {CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import Tab from './burger-ingredients-tab.module.css';
-import Modal from "../modal/modal";
 import PropTypes from "prop-types";
-import IngredientDetails from '../modal-ingredient-details/ingredient-details';
 import {Data} from "../../utils/prop-types";
+import {useMemo} from "react";
+import {useSelector} from "react-redux";
+import BurgerDragIngredient from '../burger-drag-ingredient/burger-drag-ingredient'
 
 function BurgerIngredientsTab(prop) {
-    const [isModal, setModal] = React.useState(false);
-    const [currentItem, setCurrentItem] = React.useState(false);
+    const ingredient = useSelector((state) => state.orderConstructor);
 
-    const onClick = (item) => {
-        setModal(true);
-        setCurrentItem(item);
-    }
+    const ingredientCount = useMemo(() => {
+        const count = {};
 
-    const closeModal = () => {
-        setModal(false);
-    }
+        if (ingredient.bun) {
+            count[ingredient.bun._id] = 2;
+        }
+
+        ingredient.constructorItems.forEach((constructorItem) => {
+            if (count[constructorItem.item._id]) {
+                count[constructorItem.item._id] += 1;
+            } else {
+                count[constructorItem.item._id] = 1;
+            }
+        });
+
+        return count;
+    }, [ingredient]);
 
     return (
         <div>
             <p className="text text_type_main-medium" ref={prop.sendRef}>
                 {prop.children}
             </p>
+
             <div className={Tab.stack}>
-                {prop.data.map((item, index) => {
-                    return (
-                        <div key={index} className={Tab.card} onClick={() => {
-                            onClick(item)
-                        }}>
-                            <img src={item.image} alt={item.name}/>
-                            <div className={Tab.price}>
-                                <CurrencyIcon type="primary"/>
-                                <span className='text text_type_main-small'>{item.price}</span>
-                            </div>
-                            <span className='text text_type_main-small'>{item.name}</span>
-                            {isModal && (
-                                <Modal closeModal={closeModal}>
-                                    <IngredientDetails data={currentItem}/>
-                                </Modal>
-                            )}
-                        </div>
-                    )
-                })}
+                {prop.data.map((item, index) => <BurgerDragIngredient data={item}
+                                                                      count={ingredientCount[item._id]}
+                                                                      key={index}
+                                                                      openModal={prop.openModal}/>)}
             </div>
         </div>
     );
@@ -57,5 +51,6 @@ BurgerIngredientsTab.propTypes = {
         PropTypes.shape({current: PropTypes.any})
     ]).isRequired,
     children: PropTypes.string.isRequired,
+    сount: PropTypes.number,
     data: PropTypes.arrayOf(PropTypes.shape(Data)).isRequired,
 };
