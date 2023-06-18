@@ -3,13 +3,11 @@ import {Tab} from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientsStyle from './burger-ingredients.module.css';
 import BurgerIngredientsTab from '../burger-ingredients-tab/burger-ingredients-tab';
 import {useDispatch, useSelector} from "react-redux";
-import {getIngredientsAll} from "../../services/actions/ingredientsAll";
 import Modal from "../modal/modal";
 import IngredientDetails from "../modal-ingredient-details/ingredient-details";
 
 function BurgerIngredients() {
     const [currentTab, setCurrentTab] = React.useState('buns');
-    const dispatch = useDispatch();
     const [isModal, setModal] = React.useState(false);
     const data = useSelector((state) => state.ingredientInfo.item);
 
@@ -19,9 +17,6 @@ function BurgerIngredients() {
     const closeModal = () => {
         setModal(false);
     }
-    React.useEffect(() => {
-        dispatch(getIngredientsAll());
-    }, [dispatch]);
     const {
         ingredientsAll,
         isIngredientsRequest,

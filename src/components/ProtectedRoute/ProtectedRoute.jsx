@@ -1,9 +1,19 @@
-import { Navigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-const ProtectedRoute = ({ element }) => {
-    const { isAuth } = useSelector((state) => state.user);
+import { Navigate, useLocation } from "react-router-dom";
+import { useSelector  } from "react-redux";
 
-    return isAuth ? element : <Navigate to="/login" />
-};
+export default function ProtectedRoute({element, anonymous = false }) {
+    const {isAuth} = useSelector((store) => store.user);
 
-export default ProtectedRoute;
+    const location = useLocation();
+    const from = location.state?.from || '/';
+
+    if (anonymous && isAuth) {
+        return <Navigate to={ from } />;
+    }
+
+    if (!anonymous && !isAuth) {
+        return <Navigate to="/login" state={{ from: location}}/>;
+    }
+
+    return element;
+}
