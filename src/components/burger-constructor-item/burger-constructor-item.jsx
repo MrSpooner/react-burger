@@ -12,6 +12,7 @@ import {
     SORT_CONSTRUCTOR_ITEMS,
 } from "../../services/actions/orderConstructor";
 import {GET_INGREDIENT_INFO} from "../../services/actions/ingredientInfo";
+import {Link} from "react-router-dom";
 
 function ConstructorItem(data) {
     const [isModal, setModal] = React.useState(false);
@@ -53,21 +54,25 @@ function ConstructorItem(data) {
 
     const [, itemDrag] = useDrag({
         type: "container",
-        item: { id, index }
+        item: {id, index}
     });
 
     itemDrag(itemDrop(ref));
 
     return (
         <div ref={ref} draggable={true} onClick={onClick}>
-            <ConstructorElement
-                type={data.type}
-                text={data.type === 'top' ? `${data.data.name}` + ' (верх)'
-                    : data.type === 'bottom' ? `${data.data.name}` + ' (низ)' : data.data.name}
-                price={data.data.price}
-                thumbnail={data.data.image_mobile}
-                handleClose={() => delConstructorItem({data: data}, data.myId)}
-            />
+
+            <Link to={{pathname: `/ingredient/${data.data._id}`}}>
+                <ConstructorElement
+                    type={data.type}
+                    text={data.type === 'top' ? `${data.data.name}` + ' (верх)'
+                        : data.type === 'bottom' ? `${data.data.name}` + ' (низ)' : data.data.name}
+                    price={data.data.price}
+                    thumbnail={data.data.image_mobile}
+                    handleClose={() => delConstructorItem({data: data}, data.myId)}
+                />
+            </Link>
+
             {isModal && (
                 <Modal closeModal={closeModal}>
                     <IngredientDetails data={data.data}/>

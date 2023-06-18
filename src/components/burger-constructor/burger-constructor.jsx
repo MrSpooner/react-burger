@@ -9,6 +9,7 @@ import {nanoid} from '@reduxjs/toolkit';
 import {ADD_BUNS, ADD_ITEMS} from "../../services/actions/orderConstructor";
 import {useDrop} from "react-dnd";
 import {getOrder} from "../../services/actions/order";
+import {useNavigate} from "react-router-dom";
 
 function BurgerConstructor() {
     const [isModal, setModal] = React.useState(false);
@@ -16,10 +17,16 @@ function BurgerConstructor() {
     const orderNumber = useSelector(store => store.order.number);
     const constructorItems = useSelector(store => store.orderConstructor.constructorItems);
     const bun = useSelector(store => store.orderConstructor.bun);
+    const navigate = useNavigate();
+    const {isAuth} = useSelector((state) => state.user);
 
     const onClick = () => {
-        dispatch(getOrder(ingredientsId));
-        setModal(true);
+        if (isAuth) {
+            dispatch(getOrder(ingredientsId));
+            setModal(true);
+        } else {
+            navigate("/login");
+        }
     }
 
     const closeModal = () => {
