@@ -6,23 +6,31 @@ import PropTypes from "prop-types";
 import {Data} from "../../utils/prop-types";
 import Style from './burger-drag-ingredient.module.css';
 import React from 'react';
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 
 const BurgerDragIngredient = (data) => {
     const dispatch = useDispatch();
+    const location = useLocation();
     const [, itemRef] = useDrag({
         type: "ingredients",
         item: data.data
     });
+    const item = data.data;
 
-    const onClick = () => {
-        dispatch({type: GET_INGREDIENT_INFO, item: {data: data.data}});
-        data.openModal();
-    };
+    const onClick = React.useCallback(() => {
+        dispatch({type: GET_INGREDIENT_INFO, item});
+    }, [dispatch, item]);
 
     return (
-        <Link to={{pathname: `/ingredient/${data.data._id}`}} className={Style.card}>
-            <div ref={itemRef} draggable={true} onClick={onClick}>
+        <Link
+            key={data.data._id}
+            to={{
+                pathname: `/ingredient/${data.data._id}`,
+                state: {background: location}
+            }}
+            className={Style.card}
+            onClick={onClick}>
+            <div ref={itemRef} draggable={true}>
 
                 {data.count && <Counter count={data.count} size="default"/>}
 

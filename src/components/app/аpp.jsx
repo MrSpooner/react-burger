@@ -13,12 +13,19 @@ import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import {Routes, Route, useLocation} from "react-router-dom";
 import IngredientDetails from "../modal-ingredient-details/ingredient-details";
 import {getIngredientsAll} from "../../services/actions/ingredientsAll";
+import {useNavigate} from "react-router-dom";
+import Modal from "../modal/modal";
+import {
+    DELETE_INGREDIENT_INFO
+} from "../../services/actions/ingredientInfo";
 
 function App() {
     const {isAuth} = useSelector((state) => state.user);
     const location = useLocation();
-    const background = location.state?.background;
+    let background = location.state && location.state.background;
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+
 
     React.useEffect(() => {
         dispatch(getIngredientsAll());
@@ -29,19 +36,35 @@ function App() {
         }
     }, [localStorage.getItem("jwt"), isAuth, dispatch]);
 
+    const closeModal = () => {
+        dispatch({type: DELETE_INGREDIENT_INFO});
+        navigate(-1);
+    }
+
     return (
         <>
             <Header/>
+
             <Routes location={background || location}>
-                <Route path={"/"} element={<HomePage/>}/>
-                <Route path={`/ingredient/:idCard`} element={<IngredientDetails/>}/>
-                <Route path={"/login"} element={<Login/>}/>
-                <Route path={"/register"} element={<Register/>}/>
-                <Route path={"/forgot-password"} element={<ForgotPassword/>}/>
-                <Route path={"/reset-password"} element={<ResetPassword/>}/>
+                <Route path="/" element={<HomePage/>}/>
+                <Route path='/ingredient/:idCard' element={<IngredientDetails/>}/>
+                <Route path="/login" element={<Login/>}/>
+                <Route path="/register" element={<Register/>}/>
+                <Route path="/forgot-password" element={<ForgotPassword/>}/>
+                <Route path="/reset-password" element={<ResetPassword/>}/>
                 <Route path='/profile' element={<ProtectedRoute element={<Profile/>}/>}/>
                 <Route path="*" element={<h1>404</h1>}/>
             </Routes>
+
+            {background && (
+                <Route
+                    path='/ingredient/:idCard'
+                    element={
+                    <Modal closeModal={closeModal}>
+                        <IngredientDetails/>
+                    </Modal>
+                }/>
+            )}
         </>
     );
 }
