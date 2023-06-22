@@ -2,8 +2,6 @@ import React from 'react';
 import {ConstructorElement} from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from "prop-types";
 import {Data} from "../../utils/prop-types";
-import Modal from "../modal/modal";
-import IngredientDetails from '../modal-ingredient-details/ingredient-details';
 import {useDrop} from "react-dnd/dist/hooks/useDrop/useDrop";
 import {useDrag} from "react-dnd";
 import {useDispatch} from "react-redux";
@@ -12,10 +10,10 @@ import {
     SORT_CONSTRUCTOR_ITEMS,
 } from "../../services/actions/orderConstructor";
 import {GET_INGREDIENT_INFO} from "../../services/actions/ingredientInfo";
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 
 function ConstructorItem(data) {
-    const [isModal, setModal] = React.useState(false);
+    const location = useLocation();
     const index = data.index;
     const id = data.myId;
     const dispatch = useDispatch();
@@ -23,11 +21,6 @@ function ConstructorItem(data) {
 
     const onClick = () => {
         dispatch({type: GET_INGREDIENT_INFO, item: {data: data.data}});
-        setModal(true);
-    }
-
-    const closeModal = () => {
-        setModal(false);
     }
 
     const delConstructorItem = (item) => {
@@ -62,7 +55,8 @@ function ConstructorItem(data) {
     return (
         <div ref={ref} draggable={true} onClick={onClick}>
 
-            <Link to={{pathname: `/ingredient/${data.data._id}`}}>
+            <Link to={`/ingredient/${data.data._id}`}
+                  state={{background: location}}>
                 <ConstructorElement
                     type={data.type}
                     text={data.type === 'top' ? `${data.data.name}` + ' (верх)'
@@ -72,12 +66,6 @@ function ConstructorItem(data) {
                     handleClose={() => delConstructorItem({data: data}, data.myId)}
                 />
             </Link>
-
-            {isModal && (
-                <Modal closeModal={closeModal}>
-                    <IngredientDetails data={data.data}/>
-                </Modal>
-            )}
         </div>
     );
 }

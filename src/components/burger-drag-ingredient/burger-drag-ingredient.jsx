@@ -24,10 +24,8 @@ const BurgerDragIngredient = (data) => {
     return (
         <Link
             key={data.data._id}
-            to={{
-                pathname: `/ingredient/${data.data._id}`,
-                state: {background: location}
-            }}
+            to={`/ingredient/${data.data._id}`}
+            state={{background: location}}
             className={Style.card}
             onClick={onClick}>
             <div ref={itemRef} draggable={true}>

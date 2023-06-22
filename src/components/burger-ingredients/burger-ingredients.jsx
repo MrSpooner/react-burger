@@ -2,21 +2,10 @@ import React from 'react';
 import {Tab} from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientsStyle from './burger-ingredients.module.css';
 import BurgerIngredientsTab from '../burger-ingredients-tab/burger-ingredients-tab';
-import {useDispatch, useSelector} from "react-redux";
-import Modal from "../modal/modal";
-import IngredientDetails from "../modal-ingredient-details/ingredient-details";
+import {useSelector} from "react-redux";
 
 function BurgerIngredients() {
     const [currentTab, setCurrentTab] = React.useState('buns');
-    const [isModal, setModal] = React.useState(false);
-    const data = useSelector((state) => state.ingredientInfo.item);
-
-    const openModal = () => {
-        setModal(true);
-    };
-    const closeModal = () => {
-        setModal(false);
-    }
     const {
         ingredientsAll,
         isIngredientsRequest,
@@ -87,17 +76,12 @@ function BurgerIngredients() {
                     </div>
 
                     <div className={`${IngredientsStyle.tabscontent} custom-scroll`} onScroll={setTab}>
-                        <BurgerIngredientsTab data={buns} sendRef={bunsRef} openModal = {openModal}>Булки</BurgerIngredientsTab>
-                        <BurgerIngredientsTab data={sauces} sendRef={saucesRef} openModal = {openModal}>Соусы</BurgerIngredientsTab>
-                        <BurgerIngredientsTab data={fillings} sendRef={fillingsRef} openModal = {openModal}>Начинки</BurgerIngredientsTab>
+                        <BurgerIngredientsTab data={buns} sendRef={bunsRef}>Булки</BurgerIngredientsTab>
+                        <BurgerIngredientsTab data={sauces} sendRef={saucesRef}>Соусы</BurgerIngredientsTab>
+                        <BurgerIngredientsTab data={fillings} sendRef={fillingsRef}>Начинки</BurgerIngredientsTab>
                     </div>
                 </div>)
             }
-            {isModal && (
-                <Modal closeModal={closeModal}>
-                    <IngredientDetails data = {data}/>
-                </Modal>
-            )}
         </div>
     );
 }

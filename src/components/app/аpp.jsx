@@ -57,13 +57,15 @@ function App() {
             </Routes>
 
             {background && (
-                <Route
-                    path='/ingredient/:idCard'
-                    element={
-                    <Modal closeModal={closeModal}>
-                        <IngredientDetails/>
-                    </Modal>
-                }/>
+                <Routes>
+                    <Route
+                        path='/ingredient/:idCard'
+                        element={
+                            <Modal closeModal={closeModal}>
+                                <IngredientDetails/>
+                            </Modal>
+                        }/>
+                </Routes>
             )}
         </>
     );
