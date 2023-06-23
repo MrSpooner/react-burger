@@ -36,8 +36,7 @@ function BurgerIngredientsTab(prop) {
             <div className={Tab.stack}>
                 {prop.data.map((item, index) => <BurgerDragIngredient data={item}
                                                                       count={ingredientCount[item._id]}
-                                                                      key={index}
-                                                                      openModal={prop.openModal}/>)}
+                                                                      key={index}/>)}
             </div>
         </div>
     );

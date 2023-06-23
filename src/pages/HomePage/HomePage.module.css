@@ -1,0 +1,14 @@
+.main {
+    text-align: center;
+    height: 100vh;
+}
+
+.flex {
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    height: 912px;
+    width: 600px
+}

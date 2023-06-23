@@ -2,8 +2,6 @@ import React from 'react';
 import {ConstructorElement} from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from "prop-types";
 import {Data} from "../../utils/prop-types";
-import Modal from "../modal/modal";
-import IngredientDetails from '../modal-ingredient-details/ingredient-details';
 import {useDrop} from "react-dnd/dist/hooks/useDrop/useDrop";
 import {useDrag} from "react-dnd";
 import {useDispatch} from "react-redux";
@@ -12,9 +10,10 @@ import {
     SORT_CONSTRUCTOR_ITEMS,
 } from "../../services/actions/orderConstructor";
 import {GET_INGREDIENT_INFO} from "../../services/actions/ingredientInfo";
+import {Link, useLocation} from "react-router-dom";
 
 function ConstructorItem(data) {
-    const [isModal, setModal] = React.useState(false);
+    const location = useLocation();
     const index = data.index;
     const id = data.myId;
     const dispatch = useDispatch();
@@ -22,11 +21,6 @@ function ConstructorItem(data) {
 
     const onClick = () => {
         dispatch({type: GET_INGREDIENT_INFO, item: {data: data.data}});
-        setModal(true);
-    }
-
-    const closeModal = () => {
-        setModal(false);
     }
 
     const delConstructorItem = (item) => {
@@ -53,26 +47,25 @@ function ConstructorItem(data) {
 
     const [, itemDrag] = useDrag({
         type: "container",
-        item: { id, index }
+        item: {id, index}
     });
 
     itemDrag(itemDrop(ref));
 
     return (
         <div ref={ref} draggable={true} onClick={onClick}>
-            <ConstructorElement
-                type={data.type}
-                text={data.type === 'top' ? `${data.data.name}` + ' (верх)'
-                    : data.type === 'bottom' ? `${data.data.name}` + ' (низ)' : data.data.name}
-                price={data.data.price}
-                thumbnail={data.data.image_mobile}
-                handleClose={() => delConstructorItem({data: data}, data.myId)}
-            />
-            {isModal && (
-                <Modal closeModal={closeModal}>
-                    <IngredientDetails data={data.data}/>
-                </Modal>
-            )}
+
+            <Link to={`/ingredient/${data.data._id}`}
+                  state={{background: location}}>
+                <ConstructorElement
+                    type={data.type}
+                    text={data.type === 'top' ? `${data.data.name}` + ' (верх)'
+                        : data.type === 'bottom' ? `${data.data.name}` + ' (низ)' : data.data.name}
+                    price={data.data.price}
+                    thumbnail={data.data.image_mobile}
+                    handleClose={() => delConstructorItem({data: data}, data.myId)}
+                />
+            </Link>
         </div>
     );
 }
