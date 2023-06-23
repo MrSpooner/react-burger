@@ -8,9 +8,13 @@ import {ADD_BUNS, ADD_ITEMS} from "../../services/actions/orderConstructor";
 import {useDrop} from "react-dnd";
 import {getOrder} from "../../services/actions/order";
 import {useNavigate} from "react-router-dom";
+import Modal from "../modal/modal";
+import OrderDetails from "../modal-order-details/order-details";
 
 function BurgerConstructor() {
     const dispatch = useDispatch();
+    const [isModal, setModal] = React.useState(false);
+    const orderNumber = useSelector(store => store.order.number);
     const constructorItems = useSelector(store => store.orderConstructor.constructorItems);
     const bun = useSelector(store => store.orderConstructor.bun);
     const navigate = useNavigate();
@@ -22,6 +26,7 @@ function BurgerConstructor() {
         } else {
             navigate("/login");
         }
+        setModal(true);
     }
 
     const addItem = (item) => {
@@ -60,6 +65,10 @@ function BurgerConstructor() {
 
     const [, itemsDrop] = useDrop(dropConf);
     const [, emptyDrop] = useDrop(dropConf);
+
+    const closeModal = () => {
+        setModal(false);
+    }
 
     const ingredientsId = React.useMemo(() => {
         let constructorItemsIds = [];
@@ -105,6 +114,12 @@ function BurgerConstructor() {
                     </Button>
 
                 </div>
+            )}
+
+            {isModal && (
+                <Modal closeModal={closeModal}>
+                    <OrderDetails orderNumber={orderNumber}/>
+                </Modal>
             )}
         </div>
     );
