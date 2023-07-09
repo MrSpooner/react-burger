@@ -1,0 +1,37 @@
+.main {
+    display: flex;
+    justify-content: center;
+    margin-top: 180px;
+}
+
+.links {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.form {
+    width: 480px;
+    margin-left: 160px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    position: relative;
+}
+
+.description {
+    font-family: "JetBrainsMono", Arial, sans-serif;
+    color: #8585AD;
+    width: 320px;
+}
+
+.buttons {
+    display: flex;
+    margin-left: 50%;
+    align-items: center;
+    gap: 20px;
+}
+
+.noDecor{
+    text-decoration: none;
+}

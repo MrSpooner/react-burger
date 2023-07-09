@@ -1,22 +1,31 @@
-import React from 'react';
+import React, {ReactNode} from 'react';
 import Tab from './burger-ingredients-tab.module.css';
-import PropTypes from "prop-types";
-import {Data} from "../../utils/prop-types";
 import {useMemo} from "react";
-import {useSelector} from "react-redux";
 import BurgerDragIngredient from '../burger-drag-ingredient/burger-drag-ingredient'
+import { useAppSelector } from '../../utils/useData';
+import {TIngredient, TItemIngredient} from "../../utils/types";
 
-function BurgerIngredientsTab(prop) {
-    const ingredient = useSelector((state) => state.orderConstructor);
+type TIngredientBurger = {
+    sendRef: React.RefObject<HTMLHeadingElement>;
+    data: TIngredient[];
+    children?: ReactNode
+}
+
+interface ICount {
+    [id: string]: number;
+}
+
+const BurgerIngredientsTab: React.FC<TIngredientBurger> = (prop: TIngredientBurger) => {
+    const ingredient = useAppSelector((state) => state.orderConstructor);
 
     const ingredientCount = useMemo(() => {
-        const count = {};
+        const count: ICount = {};
 
         if (ingredient.bun) {
             count[ingredient.bun._id] = 2;
         }
 
-        ingredient.constructorItems.forEach((constructorItem) => {
+        ingredient.constructorItems.forEach((constructorItem: TItemIngredient) => {
             if (count[constructorItem.item._id]) {
                 count[constructorItem.item._id] += 1;
             } else {
@@ -36,21 +45,10 @@ function BurgerIngredientsTab(prop) {
             <div className={Tab.stack}>
                 {prop.data.map((item, index) => <BurgerDragIngredient data={item}
                                                                       count={ingredientCount[item._id]}
-                                                                      key={index}
-                                                                      openModal={prop.openModal}/>)}
+                                                                      key={index}/>)}
             </div>
         </div>
     );
 }
 
 export default BurgerIngredientsTab;
-
-BurgerIngredientsTab.propTypes = {
-    sendRef: PropTypes.oneOfType([
-        PropTypes.func,
-        PropTypes.shape({current: PropTypes.any})
-    ]).isRequired,
-    children: PropTypes.string.isRequired,
-    сount: PropTypes.number,
-    data: PropTypes.arrayOf(PropTypes.shape(Data)).isRequired,
-};

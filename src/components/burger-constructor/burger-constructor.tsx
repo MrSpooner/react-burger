@@ -2,31 +2,35 @@ import React from 'react';
 import ConstructorItem from '../burger-constructor-item/burger-constructor-item';
 import Items from './burger-constructor.module.css';
 import {Button, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
-import Modal from "../modal/modal";
-import OrderDetails from '../modal-order-details/order-details'
-import {useSelector, useDispatch} from 'react-redux';
 import {nanoid} from '@reduxjs/toolkit';
 import {ADD_BUNS, ADD_ITEMS} from "../../services/actions/orderConstructor";
 import {useDrop} from "react-dnd";
 import {getOrder} from "../../services/actions/order";
+import {useNavigate} from "react-router-dom";
+import Modal from "../modal/modal";
+import { useAppDispatch, useAppSelector } from '../../utils/useData';
+import OrderDetails from "../modal-order-details/order-details";
+import { TIngredient, TItemIngredient } from "../../utils/types";
 
 function BurgerConstructor() {
+    const dispatch = useAppDispatch();
     const [isModal, setModal] = React.useState(false);
-    const dispatch = useDispatch();
-    const orderNumber = useSelector(store => store.order.number);
-    const constructorItems = useSelector(store => store.orderConstructor.constructorItems);
-    const bun = useSelector(store => store.orderConstructor.bun);
+    const orderNumber = useAppSelector(store => store.order.number);
+    const constructorItems = useAppSelector(store => store.orderConstructor.constructorItems);
+    const bun = useAppSelector(store => store.orderConstructor.bun);
+    const navigate = useNavigate();
+    const {isAuth} = useAppSelector((state) => state.user);
 
     const onClick = () => {
-        dispatch(getOrder(ingredientsId));
+        if (isAuth) {
+            dispatch(getOrder(ingredientsId));
+        } else {
+            navigate("/login");
+        }
         setModal(true);
     }
 
-    const closeModal = () => {
-        setModal(false);
-    }
-
-    const addItem = (item) => {
+    const addItem = (item: TIngredient) => {
         const ingredient = {item, id: nanoid()};
         const type = item.type;
 
@@ -45,7 +49,7 @@ function BurgerConstructor() {
         }
 
         if (constructorItems) {
-            constructorItems.forEach((item) => {
+            constructorItems.forEach((item: { item: {price: number } }) => {
                 result += item.item.price;
             });
         }
@@ -55,7 +59,7 @@ function BurgerConstructor() {
 
     const dropConf = {
         accept: "ingredients",
-        drop(item) {
+        drop(item: TIngredient) {
             addItem(item);
         },
     };
@@ -63,12 +67,16 @@ function BurgerConstructor() {
     const [, itemsDrop] = useDrop(dropConf);
     const [, emptyDrop] = useDrop(dropConf);
 
+    const closeModal = () => {
+        setModal(false);
+    }
+
     const ingredientsId = React.useMemo(() => {
         let constructorItemsIds = [];
 
         constructorItemsIds.push(bun._id);
 
-        constructorItems.forEach((item) => {
+        constructorItems.forEach((item: TItemIngredient) => {
             constructorItemsIds.push(item.item._id);
         });
 
@@ -88,7 +96,7 @@ function BurgerConstructor() {
             )}
 
             <div className={`${Items.ingredients} custom-scroll`}>
-                {Object.keys(constructorItems).length !== 0 && constructorItems.map((item, index) => (
+                {Object.keys(constructorItems).length !== 0 && constructorItems.map((item: TItemIngredient, index: number) => (
                     <ConstructorItem data={item.item} index={index} key={item.id} myId={item.id}/>
                 ))
                 }

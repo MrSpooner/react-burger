@@ -1,9 +1,5 @@
 import React from 'react';
 import {ConstructorElement} from '@ya.praktikum/react-developer-burger-ui-components';
-import PropTypes from "prop-types";
-import {Data} from "../../utils/prop-types";
-import Modal from "../modal/modal";
-import IngredientDetails from '../modal-ingredient-details/ingredient-details';
 import {useDrop} from "react-dnd/dist/hooks/useDrop/useDrop";
 import {useDrag} from "react-dnd";
 import {useDispatch} from "react-redux";
@@ -12,9 +8,18 @@ import {
     SORT_CONSTRUCTOR_ITEMS,
 } from "../../services/actions/orderConstructor";
 import {GET_INGREDIENT_INFO} from "../../services/actions/ingredientInfo";
+import {Link, useLocation} from "react-router-dom";
+import {TIngredient} from "../../utils/types";
 
-function ConstructorItem(data) {
-    const [isModal, setModal] = React.useState(false);
+type TConstructorType = {
+    data: TIngredient,
+    type?:  "top" | "bottom" | undefined,
+    index?: number,
+    myId?: string
+}
+
+const ConstructorItem: React.FC<TConstructorType> = (data: TConstructorType) => {
+    const location = useLocation();
     const index = data.index;
     const id = data.myId;
     const dispatch = useDispatch();
@@ -22,14 +27,9 @@ function ConstructorItem(data) {
 
     const onClick = () => {
         dispatch({type: GET_INGREDIENT_INFO, item: {data: data.data}});
-        setModal(true);
     }
 
-    const closeModal = () => {
-        setModal(false);
-    }
-
-    const delConstructorItem = (item) => {
+    const delConstructorItem = (item: TConstructorType) => {
         dispatch({
             type: DELETE_CONSTRUCTOR_ITEM,
             ...item,
@@ -38,7 +38,7 @@ function ConstructorItem(data) {
 
     const [, itemDrop] = useDrop({
         accept: "container",
-        hover(item) {
+        hover(item: TIngredient) {
             const dropItem = item.index;
             const draggedItem = data.index;
 
@@ -53,35 +53,27 @@ function ConstructorItem(data) {
 
     const [, itemDrag] = useDrag({
         type: "container",
-        item: { id, index }
+        item: {id, index}
     });
 
     itemDrag(itemDrop(ref));
 
     return (
         <div ref={ref} draggable={true} onClick={onClick}>
-            <ConstructorElement
-                type={data.type}
-                text={data.type === 'top' ? `${data.data.name}` + ' (верх)'
-                    : data.type === 'bottom' ? `${data.data.name}` + ' (низ)' : data.data.name}
-                price={data.data.price}
-                thumbnail={data.data.image_mobile}
-                handleClose={() => delConstructorItem({data: data}, data.myId)}
-            />
-            {isModal && (
-                <Modal closeModal={closeModal}>
-                    <IngredientDetails data={data.data}/>
-                </Modal>
-            )}
+
+            <Link to={`/ingredient/${data.data._id}`}
+                  state={{background: location}}>
+                <ConstructorElement
+                    type={data.type}
+                    text={data.type === 'top' ? `${data.data.name}` + ' (верх)'
+                        : data.type === 'bottom' ? `${data.data.name}` + ' (низ)' : data.data.name}
+                    price={data.data.price}
+                    thumbnail={data.data.image_mobile}
+                    handleClose={() => delConstructorItem(data)}
+                />
+            </Link>
         </div>
     );
 }
 
 export default ConstructorItem;
-
-ConstructorItem.propTypes = {
-    data: PropTypes.shape(Data).isRequired,
-    type: PropTypes.string,
-    index: PropTypes.number,
-    myId: PropTypes.string
-};

@@ -1,16 +1,20 @@
-import React from 'react';
+import React, {ReactNode} from 'react';
 import ReactDOM from 'react-dom';
 import ModalOverlay from "../modal-overlay/modal-overlay";
-import PropTypes from "prop-types";
 import Style from './modal.module.css'
 import {CloseIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 
 const ESC_KEYCODE = 27
 
-function Modal(data) {
-    const modal = document.getElementById("modal");
+type TModal ={
+    closeModal: () => void;
+    children?: ReactNode
+}
 
-    const onKeyDown = (event) => {
+const Modal: React.FC<TModal> = (data: TModal) => {
+    const modal = document.getElementById("modal") as HTMLElement;
+
+    const onKeyDown = (event: KeyboardEvent) => {
         if (event.keyCode === ESC_KEYCODE) {
             data.closeModal();
         }
@@ -30,7 +34,7 @@ function Modal(data) {
 
             <div className={Style.background}>
                 <div className={Style.close}>
-                    <CloseIcon type="primary" onClick={data.closeModal} className={Style.close}/>
+                    <CloseIcon type="primary" onClick={data.closeModal}/>
                 </div>
             </div>
 
@@ -41,8 +45,3 @@ function Modal(data) {
 }
 
 export default Modal;
-
-Modal.propTypes = {
-    closeModal: PropTypes.func.isRequired,
-    children: PropTypes.element.isRequired
-};

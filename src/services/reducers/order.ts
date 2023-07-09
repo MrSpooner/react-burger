@@ -10,7 +10,7 @@ const initialState = {
     orderRequestError: false
 };
 
-export const order = (state = initialState, action) => {
+export const order = (state = initialState, action: any) => {
     switch (action.type) {
         case GET_ORDER_REQUEST: {
             return {
