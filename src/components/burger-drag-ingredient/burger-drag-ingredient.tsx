@@ -2,13 +2,18 @@ import {CurrencyIcon, Counter} from "@ya.praktikum/react-developer-burger-ui-com
 import {useDrag} from "react-dnd/dist/hooks";
 import {GET_INGREDIENT_INFO} from "../../services/actions/ingredientInfo";
 import {useDispatch} from "react-redux";
-import PropTypes from "prop-types";
-import {Data} from "../../utils/prop-types";
 import Style from './burger-drag-ingredient.module.css';
 import React from 'react';
 import {Link, useLocation} from "react-router-dom";
+import {TIngredient} from "../../utils/types";
 
-const BurgerDragIngredient = (data) => {
+type TIngredientBurger = {
+    count: number;
+    data: TIngredient;
+    key: number
+}
+
+const BurgerDragIngredient: React.FC<TIngredientBurger>  = (data: TIngredientBurger) => {
     const dispatch = useDispatch();
     const location = useLocation();
     const [, itemRef] = useDrag({
@@ -46,7 +51,3 @@ const BurgerDragIngredient = (data) => {
 };
 
 export default BurgerDragIngredient;
-
-BurgerDragIngredient.propTypes = {
-    data: PropTypes.shape(Data).isRequired
-};

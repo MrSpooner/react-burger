@@ -1,17 +1,21 @@
-import React from 'react';
+import React, { UIEvent } from 'react';
+import { useRef, useState } from "react";
 import {Tab} from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientsStyle from './burger-ingredients.module.css';
 import BurgerIngredientsTab from '../burger-ingredients-tab/burger-ingredients-tab';
-import {useSelector} from "react-redux";
+import { useAppSelector } from '../../utils/useData';
+import {TIngredient} from "../../utils/types";
 
-function BurgerIngredients() {
-    const [currentTab, setCurrentTab] = React.useState('buns');
+const BurgerIngredients = () => {
+    const [currentTab, setCurrentTab] = useState<string>('buns');
     const {
         ingredientsAll,
         isIngredientsRequest,
         isIngredientsRequestError
-    } = useSelector(store => store.ingredientsAll);
-    const setTab = (tab) => {
+    } = useAppSelector(store => store.ingredientsAll);
+    const scrollTab = (value: UIEvent<HTMLDivElement>) => {
+        const tab = (value.target as HTMLInputElement).value;
+
         setCurrentTab(tab);
 
         switch (tab) {
@@ -29,31 +33,35 @@ function BurgerIngredients() {
 
                 break;
             default:
-                const tabsPos = tabsRef.current.getBoundingClientRect().top;
-                const bunsPos = bunsRef.current.getBoundingClientRect().top;
-                const saucesPos = saucesRef.current.getBoundingClientRect().top;
-                const fillingsPos = fillingsRef.current.getBoundingClientRect().top;
-
-                if (Math.abs(tabsPos - bunsPos) < Math.abs(tabsPos - saucesPos)) {
-                    setCurrentTab('buns')
-                } else if (Math.abs(tabsPos - saucesPos) < Math.abs(tabsPos - fillingsPos)) {
-                    setCurrentTab('sauces')
-                } else {
-                    setCurrentTab('fillings')
-                }
-
                 break;
         }
     };
 
-    const buns = ingredientsAll.filter((item) => item.type === 'bun');
-    const sauces = ingredientsAll.filter((item) => item.type === 'sauce');
-    const fillings = ingredientsAll.filter((item) => item.type === 'main');
+    const setTab = () => {
+        const tabsPos = tabsRef?.current?.getBoundingClientRect().top;
+        const bunsPos = bunsRef?.current?.getBoundingClientRect().top;
+        const saucesPos = saucesRef?.current?.getBoundingClientRect().top;
+        const fillingsPos = fillingsRef?.current?.getBoundingClientRect().top;
 
-    const tabsRef = React.useRef(null);
-    const bunsRef = React.useRef(null);
-    const saucesRef = React.useRef(null);
-    const fillingsRef = React.useRef(null);
+        if (tabsPos && bunsPos && saucesPos && fillingsPos) {
+            if (Math.abs(tabsPos - bunsPos) < Math.abs(tabsPos - saucesPos)) {
+                setCurrentTab('buns')
+            } else if (Math.abs(tabsPos - saucesPos) < Math.abs(tabsPos - fillingsPos)) {
+                setCurrentTab('sauces')
+            } else {
+                setCurrentTab('fillings')
+            }
+        }
+    }
+
+    const buns = ingredientsAll.filter((item: TIngredient) => item.type === 'bun');
+    const sauces = ingredientsAll.filter((item: TIngredient) => item.type === 'sauce');
+    const fillings = ingredientsAll.filter((item: TIngredient) => item.type === 'main');
+
+    const tabsRef = useRef<HTMLHeadingElement>(null);
+    const bunsRef = useRef<HTMLHeadingElement>(null);
+    const saucesRef = useRef<HTMLHeadingElement>(null);
+    const fillingsRef = useRef<HTMLHeadingElement>(null);
 
     return (
         <div>
@@ -75,7 +83,7 @@ function BurgerIngredients() {
                         </Tab>
                     </div>
 
-                    <div className={`${IngredientsStyle.tabscontent} custom-scroll`} onScroll={setTab}>
+                    <div className={`${IngredientsStyle.tabscontent} custom-scroll`} onScroll={scrollTab}>
                         <BurgerIngredientsTab data={buns} sendRef={bunsRef}>Булки</BurgerIngredientsTab>
                         <BurgerIngredientsTab data={sauces} sendRef={saucesRef}>Соусы</BurgerIngredientsTab>
                         <BurgerIngredientsTab data={fillings} sendRef={fillingsRef}>Начинки</BurgerIngredientsTab>

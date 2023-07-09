@@ -1,14 +1,15 @@
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import Style from "./Profile.module.css";
 import {useState, useEffect} from "react";
-import {useSelector, useDispatch} from "react-redux";
 import {NavLink} from "react-router-dom";
 import {logout, updateUser} from "../../services/actions/user";
+import { useAppDispatch, useAppSelector } from '../../utils/useData';
+import React from 'react';
 
-function Profile() {
-    const dispatch = useDispatch();
+const Profile: React.FC = () =>{
+    const dispatch = useAppDispatch();
 
-    const {user} = useSelector((state) => state.user);
+    const {user} = useAppSelector((state) => state.user);
     const [icon, setIcon] = useState({name: false, email: false, password: false});
     const [inputProfile, setInputs] = useState({name: "", email: "", password: ""});
     const [buttonsVisible, setButtonsVisible] = useState(false);
@@ -25,7 +26,7 @@ function Profile() {
     const iconLogin = icon.email ? "CloseIcon" : "EditIcon";
     const iconPassword = icon.password ? "CloseIcon" : "EditIcon";
 
-    const onInputChange = (e) => {
+    const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInputs({...inputProfile, [e.target.name]: e.target.value});
         setButtonsVisible(true);
         setIcon({...icon, [e.target.name]: true});
@@ -54,7 +55,7 @@ function Profile() {
         setInputs({name: user.name, email: user.email, password: ""});
     }, []);
 
-    const changeUserInfo = (e) => {
+    const changeUserInfo = (e: React.FormEvent) => {
         e.preventDefault();
         dispatch(updateUser(inputProfile.name, inputProfile.email, inputProfile.password));
         setButtonsVisible(false);

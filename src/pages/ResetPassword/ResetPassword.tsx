@@ -1,21 +1,21 @@
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import Style from "./ResetPassword.module.css";
-import {useState, useRef} from "react";
-import {useDispatch, useSelector} from "react-redux";
+import React, {useState, useRef} from "react";
 import {Link, Navigate, useLocation, useNavigate} from "react-router-dom";
 import {resetPassword} from "../../services/actions/user";
 import {useData} from "../../utils/useData";
+import { useAppDispatch, useAppSelector } from '../../utils/useData';
 
 function ResetPassword() {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const location = useLocation();
     const navigate = useNavigate();
     const isPrevForgot = location.state?.prevPathname === '/forgot-password';
-    const {isAuth} = useSelector((state) => state.user);
+    const {isAuth} = useAppSelector((state) => state.user);
     const {state} = useLocation();
-    const passwordRef = useRef(null);
+    const passwordRef = useRef<HTMLInputElement>(null);
     const {values, onChanges} = useData({password: "", code: ""});
-    const [type, setType] = useState("ShowIcon");
+    const [type, setType] = useState<"ShowIcon"| "HideIcon">("ShowIcon");
 
     if (isAuth) {
         return <Navigate to={state?.from || "/"}/>;
@@ -26,16 +26,18 @@ function ResetPassword() {
     }
 
     const changePasswordLook = () => {
-        if (passwordRef.current.type === "password") {
-            passwordRef.current.type = "text";
-            setType("HideIcon");
-        } else {
-            passwordRef.current.type = "password";
-            setType("ShowIcon");
+        if (passwordRef.current) {
+            if (passwordRef.current.type === "password") {
+                passwordRef.current.type = "text";
+                setType("HideIcon");
+            } else {
+                passwordRef.current.type = "password";
+                setType("ShowIcon");
+            }
         }
     };
 
-    const submit = (e) => {
+    const submit = (e: React.FormEvent) => {
         e.preventDefault();
         dispatch(resetPassword(values.password, values.code));
         navigate("/login");

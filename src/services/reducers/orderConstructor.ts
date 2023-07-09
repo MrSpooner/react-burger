@@ -11,7 +11,7 @@ const initialState = {
     constructorItems: []
 };
 
-export const orderConstructor = (store = initialState, action) => {
+export const orderConstructor = (store = initialState, action: any) => {
     switch (action.type) {
         case ADD_BUNS:
             return {
@@ -28,7 +28,7 @@ export const orderConstructor = (store = initialState, action) => {
         case DELETE_CONSTRUCTOR_ITEM:
             return {
                 ...store,
-                constructorItems: [...store.constructorItems].filter(item => action.data.myId !== item.id)
+                constructorItems: [...store.constructorItems].filter((item: any) => action.data.myId !== item.id)
             };
 
         case RESET_CONSTRUCTOR:

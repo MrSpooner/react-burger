@@ -1,7 +1,5 @@
 import React from 'react';
 import Header from "../app-header/app-header";
-import {useSelector} from "react-redux";
-import {useDispatch} from "react-redux";
 import {getUser} from "../../services/actions/user";
 import HomePage from "../../pages/HomePage/HomePage";
 import Login from "../../pages/Login/Login";
@@ -18,12 +16,13 @@ import Modal from "../modal/modal";
 import {
     DELETE_INGREDIENT_INFO
 } from "../../services/actions/ingredientInfo";
+import { useAppDispatch, useAppSelector } from '../../utils/useData';
 
 function App() {
-    const {isAuth} = useSelector((state) => state.user);
+    const {isAuth} = useAppSelector((state) => state.user);
     const location = useLocation();
     let background = location.state && location.state.background;
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
 
@@ -52,7 +51,7 @@ function App() {
                 <Route path="/register" element={<Register/>}/>
                 <Route path="/forgot-password" element={<ForgotPassword/>}/>
                 <Route path="/reset-password" element={<ResetPassword/>}/>
-                <Route path='/profile' element={<ProtectedRoute element={<Profile/>}/>}/>
+                <Route path='/profile' element={<ProtectedRoute><Profile/></ProtectedRoute>} />
                 <Route path="*" element={<h1>404</h1>}/>
             </Routes>
 

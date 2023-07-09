@@ -1,10 +1,10 @@
-export function getCookie(name) {
+export function getCookie(name: string) {
     const matchArr = document.cookie.match(new RegExp("(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") + "=([^;]*)"));
 
     return matchArr ? decodeURIComponent(matchArr[1]) : undefined;
 }
 
-export function setCookie(name, value, props) {
+export function setCookie(name: string, value: string, props: any) {
     props = {path: "/", ...props};
 
     let expires = props.expires;

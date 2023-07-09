@@ -1,7 +1,5 @@
 import React from 'react';
 import {ConstructorElement} from '@ya.praktikum/react-developer-burger-ui-components';
-import PropTypes from "prop-types";
-import {Data} from "../../utils/prop-types";
 import {useDrop} from "react-dnd/dist/hooks/useDrop/useDrop";
 import {useDrag} from "react-dnd";
 import {useDispatch} from "react-redux";
@@ -11,8 +9,16 @@ import {
 } from "../../services/actions/orderConstructor";
 import {GET_INGREDIENT_INFO} from "../../services/actions/ingredientInfo";
 import {Link, useLocation} from "react-router-dom";
+import {TIngredient} from "../../utils/types";
 
-function ConstructorItem(data) {
+type TConstructorType = {
+    data: TIngredient,
+    type?:  "top" | "bottom" | undefined,
+    index?: number,
+    myId?: string
+}
+
+const ConstructorItem: React.FC<TConstructorType> = (data: TConstructorType) => {
     const location = useLocation();
     const index = data.index;
     const id = data.myId;
@@ -23,7 +29,7 @@ function ConstructorItem(data) {
         dispatch({type: GET_INGREDIENT_INFO, item: {data: data.data}});
     }
 
-    const delConstructorItem = (item) => {
+    const delConstructorItem = (item: TConstructorType) => {
         dispatch({
             type: DELETE_CONSTRUCTOR_ITEM,
             ...item,
@@ -32,7 +38,7 @@ function ConstructorItem(data) {
 
     const [, itemDrop] = useDrop({
         accept: "container",
-        hover(item) {
+        hover(item: TIngredient) {
             const dropItem = item.index;
             const draggedItem = data.index;
 
@@ -63,7 +69,7 @@ function ConstructorItem(data) {
                         : data.type === 'bottom' ? `${data.data.name}` + ' (низ)' : data.data.name}
                     price={data.data.price}
                     thumbnail={data.data.image_mobile}
-                    handleClose={() => delConstructorItem({data: data}, data.myId)}
+                    handleClose={() => delConstructorItem(data)}
                 />
             </Link>
         </div>
@@ -71,10 +77,3 @@ function ConstructorItem(data) {
 }
 
 export default ConstructorItem;
-
-ConstructorItem.propTypes = {
-    data: PropTypes.shape(Data).isRequired,
-    type: PropTypes.string,
-    index: PropTypes.number,
-    myId: PropTypes.string
-};

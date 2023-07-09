@@ -1,38 +1,38 @@
 import {Input,Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import styleLogin from "./Login.module.css";
-import {useState, useRef} from "react";
-import {useDispatch, useSelector} from "react-redux";
+import React, {useState, useRef} from "react";
 import {Link, useLocation, Navigate} from "react-router-dom";
 import {login} from "../../services/actions/user";
+import { useAppDispatch, useAppSelector } from '../../utils/useData';
 
 function Login() {
-    const {isAuth} = useSelector((state) => state.user);
+    const {isAuth} = useAppSelector((state) => state.user);
     const {state} = useLocation();
-    const dispatch = useDispatch();
-    const PasswordRef = useRef(null);
+    const dispatch = useAppDispatch();
+    const PasswordRef = useRef<HTMLInputElement>(null);
     const [inputLogin, setInputLogin] = useState({email: "", password: ""});
-    const [type, setType] = useState("ShowIcon");
+    const [type, setType] = useState<"ShowIcon"| "HideIcon">("ShowIcon");
 
     if (isAuth) {
         return <Navigate to={state?.from || "/"}/>;
     }
 
-    const submit = (e) => {
+    const submit = (e: React.FormEvent) => {
         e.preventDefault();
         dispatch(login(inputLogin.email, inputLogin.password));
     };
 
     const changePasswordLook = () => {
-        if (PasswordRef.current.type === "password") {
+        if (PasswordRef.current?.type === "password") {
             setType("HideIcon");
             PasswordRef.current.type = "text";
-        } else {
+        } else if (PasswordRef.current) {
             setType("ShowIcon");
             PasswordRef.current.type = "password";
         }
     };
 
-    const setInput = (e) => {
+    const setInput = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInputLogin({...inputLogin, [e.target.name]: e.target.value});
     };
 

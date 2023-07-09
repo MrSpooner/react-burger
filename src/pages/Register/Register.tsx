@@ -1,34 +1,37 @@
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import Style from "./Register.module.css";
-import {useState, useRef} from "react";
-import {useDispatch, useSelector} from "react-redux";
+import React, {useState, useRef} from "react";
 import {Link, Navigate, useLocation} from "react-router-dom";
 import {registerUser} from "../../services/actions/user";
 import {useData} from "../../utils/useData";
+import { useAppDispatch, useAppSelector } from '../../utils/useData';
 
 function Register() {
-    const dispatch = useDispatch();
-    const {isAuth} = useSelector((state) => state.user);
+    const dispatch = useAppDispatch();
+    const {isAuth} = useAppSelector((state) => state.user);
     const {state} = useLocation();
     const {values, onChanges} = useData({email: "", password: "", name: ""});
-    const [type, setType] = useState("ShowIcon");
-    const passwordRef = useRef(null);
+    const [type, setType] = useState<"ShowIcon"| "HideIcon">("ShowIcon");
+    const passwordRef = useRef<HTMLInputElement>(null);
 
     if (isAuth) {
         return <Navigate to={state?.from || "/"}/>;
     }
 
     const changePasswordLook = () => {
-        if (passwordRef.current.type === "password") {
-            passwordRef.current.type = "text";
-            setType("HideIcon");
-        } else {
-            passwordRef.current.type = "password";
-            setType("ShowIcon");
+        if (passwordRef.current) {
+            if (passwordRef.current.type === "password") {
+                passwordRef.current.type = "text";
+                setType("HideIcon");
+            } else {
+                passwordRef.current.type = "password";
+                setType("ShowIcon");
+            }
         }
+
     };
 
-    const submit = (e) => {
+    const submit = (e: React.FormEvent) => {
         e.preventDefault();
         dispatch(registerUser(values.email, values.password, values.name));
     };

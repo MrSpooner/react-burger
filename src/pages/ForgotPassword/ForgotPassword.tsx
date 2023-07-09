@@ -1,17 +1,18 @@
 import {Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import Style from "./ForgotPassword.module.css";
-import {useDispatch, useSelector} from "react-redux";
 import {Link, Navigate, useNavigate, useLocation} from "react-router-dom";
 import {requestForgot} from "../../services/actions/user";
 import {useData} from "../../utils/useData";
+import { useAppDispatch, useAppSelector } from '../../utils/useData';
+import React from "react";
 
 function ForgotPassword() {
-    const {isAuth} = useSelector((state) => state.user);
-    const dispatch = useDispatch();
+    const {isAuth} = useAppSelector((state) => state.user);
+    const dispatch = useAppDispatch();
     const location = useLocation();
     const navigate = useNavigate();
     const {values, onChanges} = useData({email: ""});
-    const submit = (e) => {
+    const submit = (e: React.FormEvent) => {
         e.preventDefault();
         navigate("/reset-password", {state: {prevPathname: location.pathname}});
         dispatch(requestForgot(values.email));

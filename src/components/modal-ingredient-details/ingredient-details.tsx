@@ -1,13 +1,14 @@
 import React from 'react';
 import IngredientStyle from './ingredient-details.module.css';
-import {useSelector} from "react-redux";
 import {useParams} from "react-router-dom";
+import { useAppSelector } from '../../utils/useData';
+import {TIngredient} from "../../utils/types";
 
-function IngredientDetails() {
+const IngredientDetails = () => {
     const {idCard} = useParams();
-    const {ingredientsAll} = useSelector((state) => state.ingredientsAll);
+    const {ingredientsAll} = useAppSelector((state) => state.ingredientsAll);
     const item = ingredientsAll.length && ingredientsAll.find(
-        (ingredient) => ingredient._id === idCard
+        (ingredient: TIngredient) => ingredient._id === idCard
     );
 
     return (

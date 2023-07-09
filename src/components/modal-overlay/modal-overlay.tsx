@@ -1,7 +1,11 @@
 import React from 'react';
 import OverlayStyle from './modal-overlay.module.css';
 
-function ModalOverlay(data) {
+type TModalOverlay ={
+    closeModal: () => void;
+}
+
+const ModalOverlay: React.FC<TModalOverlay> = (data: TModalOverlay) => {
     const onClick = () => {
         data.closeModal();
     };

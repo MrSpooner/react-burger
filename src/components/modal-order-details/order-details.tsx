@@ -2,7 +2,11 @@ import React from 'react';
 import {CheckMarkIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import Details from './order-details.module.css'
 
-function OrderDetails(orderNumber) {
+type TOrderNumber ={
+    orderNumber: number
+}
+
+const OrderDetails: React.FC<TOrderNumber> = (orderNumber: TOrderNumber) => {
     return (
         <div className={Details.elements}>
             <p className="text text_type_digits-large">{orderNumber.orderNumber}</p>

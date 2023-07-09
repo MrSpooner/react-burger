@@ -10,7 +10,7 @@ const initialState = {
     isIngredientsRequestError: false,
 };
 
-export const ingredientsAll = (state = initialState, action) => {
+export const ingredientsAll = (state = initialState, action: any) => {
     switch (action.type) {
         case GET_INGREDIENTS_REQUEST: {
             return {

@@ -7,15 +7,15 @@ const requestParams = {
     },
 };
 
-function request(url, options) {
+function request(url:string, options:any) {
     return fetch(url, options).then(checkResponse);
 }
 
-const checkResponse = (res) => {
+const checkResponse = (res: Response) => {
     return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 };
 
-export const registerRequest = (email, password, name) => {
+export const registerRequest = (email:string, password:string, name:string) => {
     return request(`${requestParams.baseURL}auth/register`, {
         method: "POST",
         headers: requestParams.headers,
@@ -23,7 +23,7 @@ export const registerRequest = (email, password, name) => {
     });
 };
 
-export const loginRequest = (email, password) => {
+export const loginRequest = (email:string, password:string) => {
     return request(`${requestParams.baseURL}auth/login`, {
         method: "POST",
         headers: requestParams.headers,
@@ -39,7 +39,7 @@ export const logoutRequest = () => {
     });
 };
 
-export const forgotRequest = (email) => {
+export const forgotRequest = (email:string) => {
     return request(`${requestParams.baseURL}password-reset`, {
         method: "POST",
         headers: requestParams.headers,
@@ -47,7 +47,7 @@ export const forgotRequest = (email) => {
     });
 };
 
-export const resetRequest = (password, token) => {
+export const resetRequest = (password:string, token: string) => {
     return request(`${requestParams.baseURL}password-reset/reset`, {
         method: "POST",
         headers: requestParams.headers,
@@ -64,7 +64,7 @@ export const updateToken = () => {
 };
 
 
-export const updateUserData = (name, email, password) => {
+export const updateUserData = (name:string, email:string, password:string) => {
     return request(`${requestParams.baseURL}auth/user`, {
         method: "PATCH",
         headers: {
@@ -92,7 +92,7 @@ export const getProductData = () => {
     });
 };
 
-export const getOrderData = (orderInfo) => {
+export const getOrderData = (orderInfo:string[]) => {
     return request(`${requestParams.baseURL}orders`, {
         method: "POST",
         headers: requestParams.headers,

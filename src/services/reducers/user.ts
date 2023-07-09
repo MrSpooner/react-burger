@@ -65,7 +65,7 @@ const initialState = {
     isAuth: false,
 };
 
-export const user = (state = initialState, action) => {
+export const user = (state = initialState, action: any) => {
     switch (action.type) {
         case REGISTER_REQUEST: {
             return {

@@ -7,7 +7,7 @@ const defaultState = {
     item: null
 };
 
-export const ingredientInfo = (state = defaultState, action) => {
+export const ingredientInfo = (state = defaultState, action: any) => {
     switch (action.type) {
         case GET_INGREDIENT_INFO: {
             return {

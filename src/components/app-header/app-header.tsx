@@ -30,7 +30,7 @@ function Header() {
                 </NavLink>
 
                 <Link to={{pathname: `/`}}>
-                    <Logo className={Style.logo}/>
+                    <Logo />
                 </Link>
 
                 <NavLink

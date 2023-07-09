@@ -8,6 +8,8 @@ import {
     resetRequest,
     forgotRequest,
 } from "../../utils/burger-api";
+import { Dispatch } from 'redux'
+import {AnyAction} from "redux"
 import { setCookie } from "../../utils/cookie";
 
 export const REGISTER_REQUEST = "REGISTER_REQUEST";
@@ -42,8 +44,8 @@ export const UPDATE_TOKEN_REQUEST = "RESET_PASSWORD_REQUEST";
 export const UPDATE_TOKEN_SUCCESS = "RESET_PASSWORD_SUCCESS";
 export const UPDATE_TOKEN_ERROR = "RESET_PASSWORD_ERROR";
 
-export function registerUser(mail, password, name) {
-    return function (dispatch) {
+export function registerUser(mail:string, password:string, name:string) {
+    return function (dispatch: Dispatch) {
         dispatch({
             type: REGISTER_REQUEST,
         });
@@ -72,8 +74,8 @@ export function registerUser(mail, password, name) {
     };
 }
 
-export function login(email, password) {
-    return function (dispatch) {
+export function login(email:string, password:string) {
+    return function (dispatch: Dispatch) {
         dispatch({
             type: LOGIN_REQUEST,
         });
@@ -103,7 +105,7 @@ export function login(email, password) {
 }
 
 export function logout() {
-    return function (dispatch) {
+    return function (dispatch: Dispatch) {
         dispatch({
             type: LOGOUT_REQUEST,
         });
@@ -132,8 +134,8 @@ export function logout() {
     };
 }
 
-export function requestForgot(email) {
-    return function (dispatch) {
+export function requestForgot(email: string) {
+    return function (dispatch: Dispatch) {
         dispatch({
             type: FORGOT_PASSWORD_SUCCESS,
         });
@@ -158,8 +160,8 @@ export function requestForgot(email) {
     };
 }
 
-export function resetPassword(password, token) {
-    return function (dispatch) {
+export function resetPassword(password: string, token: string) {
+    return function (dispatch: Dispatch) {
         dispatch({
             type: RESET_PASSWORD_REQUEST,
         });
@@ -185,7 +187,7 @@ export function resetPassword(password, token) {
 }
 
 export function refreshToken() {
-    return function (dispatch) {
+    return function (dispatch: Dispatch<AnyAction>) {
         dispatch({
             type: UPDATE_TOKEN_REQUEST,
         });
@@ -213,8 +215,8 @@ export function refreshToken() {
     };
 }
 
-export function updateUser(name, email, password) {
-    return function (dispatch) {
+export function updateUser(name: string, email:string, password:string) {
+    return function (dispatch: Dispatch) {
         dispatch({
             type: UPDATE_USER_REQUEST,
         });
@@ -228,8 +230,8 @@ export function updateUser(name, email, password) {
             })
             .catch(() => {
                 if (localStorage.getItem("jwt")) {
-                    dispatch(refreshToken());
-                    dispatch(updateUser(name, email, password));
+                    dispatch(refreshToken() as any);
+                    dispatch(updateUser(name, email, password) as any);
                 } else {
                     dispatch({
                         type: UPDATE_USER_ERROR,
@@ -240,7 +242,7 @@ export function updateUser(name, email, password) {
 }
 
 export function getUser() {
-    return function (dispatch) {
+    return function (dispatch: Dispatch) {
         dispatch({
             type: GET_USER_REQUEST,
         });
@@ -254,7 +256,7 @@ export function getUser() {
             })
             .catch(() => {
                 if (localStorage.getItem("jwt")) {
-                    dispatch(refreshToken());
+                    dispatch(refreshToken() as any);
 
                     getUserData().then((res) => {
                         dispatch({
