@@ -3,16 +3,12 @@ import {ConstructorElement} from '@ya.praktikum/react-developer-burger-ui-compon
 import {useDrop} from "react-dnd/dist/hooks/useDrop/useDrop";
 import {useDrag} from "react-dnd";
 import {useDispatch} from "react-redux";
-import {
-    DELETE_CONSTRUCTOR_ITEM,
-    SORT_CONSTRUCTOR_ITEMS,
-} from "../../services/actions/orderConstructor";
-import {GET_INGREDIENT_INFO} from "../../services/actions/ingredientInfo";
+import {deleteIngredient, sortIngredients} from "../../services/reduxToolkit/orderConstructor";
 import {Link, useLocation} from "react-router-dom";
-import {TIngredient} from "../../utils/types";
+import {TIngredient, TItemIngredient} from "../../utils/types";
 
 type TConstructorType = {
-    data: TIngredient,
+    data: any,
     type?:  "top" | "bottom" | undefined,
     index?: number,
     myId?: string
@@ -25,15 +21,8 @@ const ConstructorItem: React.FC<TConstructorType> = (data: TConstructorType) => 
     const dispatch = useDispatch();
     const ref = React.useRef(null);
 
-    const onClick = () => {
-        dispatch({type: GET_INGREDIENT_INFO, item: {data: data.data}});
-    }
-
-    const delConstructorItem = (item: TConstructorType) => {
-        dispatch({
-            type: DELETE_CONSTRUCTOR_ITEM,
-            ...item,
-        });
+    const delConstructorItem = (item: TItemIngredient) => {
+        dispatch(deleteIngredient(item));
     };
 
     const [, itemDrop] = useDrop({
@@ -42,11 +31,8 @@ const ConstructorItem: React.FC<TConstructorType> = (data: TConstructorType) => 
             const dropItem = item.index;
             const draggedItem = data.index;
 
-            dispatch({
-                type: SORT_CONSTRUCTOR_ITEMS,
-                data: {dropItem, draggedItem},
-            });
-
+            dispatch(sortIngredients({ dropItem, draggedItem }),
+            );
             item.index = draggedItem;
         }
     });
@@ -59,9 +45,9 @@ const ConstructorItem: React.FC<TConstructorType> = (data: TConstructorType) => 
     itemDrag(itemDrop(ref));
 
     return (
-        <div ref={ref} draggable={true} onClick={onClick}>
+        <div ref={ref} draggable={true}>
 
-            <Link to={`/ingredient/${data.data._id}`}
+            {data.data  && <Link to={`/ingredient/${data.data._id}`}
                   state={{background: location}}>
                 <ConstructorElement
                     type={data.type}
@@ -69,9 +55,9 @@ const ConstructorItem: React.FC<TConstructorType> = (data: TConstructorType) => 
                         : data.type === 'bottom' ? `${data.data.name}` + ' (низ)' : data.data.name}
                     price={data.data.price}
                     thumbnail={data.data.image_mobile}
-                    handleClose={() => delConstructorItem(data)}
+                    handleClose={() => delConstructorItem(data.data)}
                 />
-            </Link>
+            </Link>}
         </div>
     );
 }

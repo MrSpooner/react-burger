@@ -1,0 +1,22 @@
+.main {
+    display: flex;
+    justify-content: center;
+    margin-top: 180px;
+}
+
+.links {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.noDecor{
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.description {
+    font-family: "JetBrainsMono", Arial, sans-serif;
+    color: #8585AD;
+    width: 320px;
+}

@@ -1,4 +1,8 @@
 import {getCookie} from "./cookie";
+import { TOrdersArr,
+    TUserResponse,
+    TOrderNumber
+} from "./types";
 
 const requestParams = {
     baseURL: "https://norma.nomoreparties.space/api/",
@@ -75,7 +79,7 @@ export const updateUserData = (name:string, email:string, password:string) => {
     });
 };
 
-export const getUserData = () => {
+export const getUserData = (): Promise<TUserResponse> => {
     return request(`${requestParams.baseURL}auth/user`, {
         method: "GET",
         headers: {
@@ -97,5 +101,23 @@ export const getOrderData = (orderInfo:string[]) => {
         method: "POST",
         headers: requestParams.headers,
         body: JSON.stringify({ingredients: orderInfo}),
+    });
+};
+
+export const getOrderReq = (orderInfo:string[]): Promise<TOrderNumber> => {
+    return request(`${requestParams.baseURL}orders`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `${getCookie("token")}`,
+        },
+        body: JSON.stringify({ ingredients: orderInfo }),
+    });
+};
+
+export const getChosenOrderReq = (number:string): Promise<TOrdersArr> => {
+    return request(`${requestParams.baseURL}orders/${number}`, {
+        method: "GET",
+        headers: requestParams.headers,
     });
 };

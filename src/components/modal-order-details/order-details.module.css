@@ -9,4 +9,5 @@
     flex-direction: column;
     justify-content: center;
     width: 550px;
+    z-index: 999;
 }

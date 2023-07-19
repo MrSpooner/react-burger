@@ -1,0 +1,11 @@
+.main {
+    position: relative;
+    width: 480px;
+    margin-left: 160px;
+}
+
+.ulOrderList {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}

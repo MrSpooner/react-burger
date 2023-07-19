@@ -1,4 +1,4 @@
-import React, { UIEvent } from 'react';
+import React from 'react';
 import { useRef, useState } from "react";
 import {Tab} from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientsStyle from './burger-ingredients.module.css';
@@ -13,12 +13,10 @@ const BurgerIngredients = () => {
         isIngredientsRequest,
         isIngredientsRequestError
     } = useAppSelector(store => store.ingredientsAll);
-    const scrollTab = (value: UIEvent<HTMLDivElement>) => {
-        const tab = (value.target as HTMLInputElement).value;
+    const scrollTab = (value: string) => {
+        setCurrentTab(value);
 
-        setCurrentTab(tab);
-
-        switch (tab) {
+        switch (value) {
             case 'buns':
                 bunsRef.current && bunsRef.current.scrollIntoView();
 
@@ -72,18 +70,18 @@ const BurgerIngredients = () => {
                     </p>
 
                     <div className={IngredientsStyle.tabs} ref={tabsRef}>
-                        <Tab value='buns' active={currentTab === 'buns'} onClick={setTab}>
+                        <Tab value='buns' active={currentTab === 'buns'} onClick={scrollTab}>
                             Булки
                         </Tab>
-                        <Tab value='sauces' active={currentTab === 'sauces'} onClick={setTab}>
+                        <Tab value='sauces' active={currentTab === 'sauces'} onClick={scrollTab}>
                             Соусы
                         </Tab>
-                        <Tab value='fillings' active={currentTab === 'fillings'} onClick={setTab}>
+                        <Tab value='fillings' active={currentTab === 'fillings'} onClick={scrollTab}>
                             Начинки
                         </Tab>
                     </div>
 
-                    <div className={`${IngredientsStyle.tabscontent} custom-scroll`} onScroll={scrollTab}>
+                    <div className={`${IngredientsStyle.tabscontent} custom-scroll`} onScroll={setTab}>
                         <BurgerIngredientsTab data={buns} sendRef={bunsRef}>Булки</BurgerIngredientsTab>
                         <BurgerIngredientsTab data={sauces} sendRef={saucesRef}>Соусы</BurgerIngredientsTab>
                         <BurgerIngredientsTab data={fillings} sendRef={fillingsRef}>Начинки</BurgerIngredientsTab>

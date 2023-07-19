@@ -25,7 +25,7 @@ const BurgerIngredientsTab: React.FC<TIngredientBurger> = (prop: TIngredientBurg
             count[ingredient.bun._id] = 2;
         }
 
-        ingredient.constructorItems.forEach((constructorItem: TItemIngredient) => {
+        ingredient.constructorItems?.forEach((constructorItem: TItemIngredient) => {
             if (count[constructorItem.item._id]) {
                 count[constructorItem.item._id] += 1;
             } else {
