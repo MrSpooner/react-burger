@@ -1,7 +1,8 @@
 .main {
     position: relative;
-    width: 480px;
     margin-left: 160px;
+    max-height: 912px;
+    overflow-y: auto;
 }
 
 .ulOrderList {

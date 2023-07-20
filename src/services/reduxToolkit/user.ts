@@ -79,7 +79,7 @@ const initialState: IInitialState = {
     tokenRequest: false,
     tokenFailed: false,
 
-    isAuth: false,
+    isAuth: true,
 };
 
 export const registerUser = createAsyncThunk(

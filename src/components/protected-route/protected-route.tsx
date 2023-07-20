@@ -1,8 +1,13 @@
 import  React from 'react';
 import { Navigate, useLocation } from "react-router-dom";
 import { useAppSelector } from '../../utils/useData';
+import { ReactNode } from "react";
 
-const ProtectedRoute: React.FC<any> = (element:any) => {
+type TProtectedRoute = {
+    children: ReactNode;
+}
+
+const ProtectedRoute: React.FC<TProtectedRoute> = (props: TProtectedRoute): any => {
     const {isAuth} = useAppSelector((store) => store.user);
     const anonymous = false;
     const location = useLocation();
@@ -16,7 +21,7 @@ const ProtectedRoute: React.FC<any> = (element:any) => {
         return <Navigate to="/login" state={{ from: location}}/>;
     }
 
-    return element.children;
+    return props.children;
 }
 
 export default ProtectedRoute;

@@ -1,8 +1,8 @@
 import React from 'react';
-import {ConstructorElement} from '@ya.praktikum/react-developer-burger-ui-components';
+import {ConstructorElement, DragIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import {useDrop} from "react-dnd/dist/hooks/useDrop/useDrop";
 import {useDrag} from "react-dnd";
-import {useDispatch} from "react-redux";
+import {useAppDispatch} from '../../utils/useData';
 import {deleteIngredient, sortIngredients} from "../../services/reduxToolkit/orderConstructor";
 import {Link, useLocation} from "react-router-dom";
 import {TIngredient, TItemIngredient} from "../../utils/types";
@@ -18,7 +18,7 @@ const ConstructorItem: React.FC<TConstructorType> = (data: TConstructorType) => 
     const location = useLocation();
     const index = data.index;
     const id = data.myId;
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const ref = React.useRef(null);
 
     const delConstructorItem = (item: TItemIngredient) => {
@@ -49,6 +49,7 @@ const ConstructorItem: React.FC<TConstructorType> = (data: TConstructorType) => 
 
             {data.data  && <Link to={`/ingredient/${data.data._id}`}
                   state={{background: location}}>
+                <DragIcon type="primary" />
                 <ConstructorElement
                     type={data.type}
                     text={data.type === 'top' ? `${data.data.name}` + ' (верх)'

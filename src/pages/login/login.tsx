@@ -9,7 +9,7 @@ function Login() {
     const {isAuth} = useAppSelector((state) => state.user);
     const {state} = useLocation();
     const dispatch = useAppDispatch();
-    const PasswordRef = useRef<HTMLInputElement>(null);
+    const passwordRef = useRef<HTMLInputElement>(null);
     const [inputLogin, setInputLogin] = useState({email: "", password: ""});
     const [type, setType] = useState<"ShowIcon"| "HideIcon">("ShowIcon");
 
@@ -23,12 +23,12 @@ function Login() {
     };
 
     const changePasswordLook = () => {
-        if (PasswordRef.current?.type === "password") {
+        if (passwordRef.current?.type === "password") {
             setType("HideIcon");
-            PasswordRef.current.type = "text";
-        } else if (PasswordRef.current) {
+            passwordRef.current.type = "text";
+        } else if (passwordRef.current) {
             setType("ShowIcon");
-            PasswordRef.current.type = "password";
+            passwordRef.current.type = "password";
         }
     };
 
@@ -60,7 +60,7 @@ function Login() {
                     value={inputLogin.password}
                     name={"password"}
                     error={false}
-                    ref={PasswordRef}
+                    ref={passwordRef}
                     onIconClick={changePasswordLook}
                     errorText={"Ошибка"}
                     size={"default"}

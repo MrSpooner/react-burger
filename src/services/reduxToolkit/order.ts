@@ -32,12 +32,8 @@ export const getOrder = createAsyncThunk(
 
 export const getChosenOrder = createAsyncThunk(
     "order/getChosenOrder",
-    async (orderNumber: string) => {
-        const response = await getChosenOrderReq(orderNumber);
-
-        return response
-    }
-)
+    getChosenOrderReq
+);
 
 const order = createSlice({
     name: "order",
