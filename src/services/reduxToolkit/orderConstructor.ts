@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { TIngredient, TItemIngredient } from "../../utils/types";
+import { TIngredient, TItemIngredient, TConstructorType } from "../../utils/types";
 
 interface IConstructorState {
     bun: TIngredient | null ;
@@ -23,10 +23,10 @@ const orderConstructor = createSlice({
                 state.constructorItems = [action.payload, ...state.constructorItems];
             }
         },
-        deleteIngredient(state: IConstructorState, action: PayloadAction<TItemIngredient> ){
+        deleteIngredient(state: IConstructorState, action: PayloadAction<TConstructorType> ){
             if (state.constructorItems){
                 state.constructorItems = [...state.constructorItems].filter(
-                    (item) => item.id !== action.payload.id
+                    (item) => item.id !== action.payload.myId
                 );}
         },
         sortIngredients(state: IConstructorState, action: PayloadAction<{dropItem: any; draggedItem: any}> ){

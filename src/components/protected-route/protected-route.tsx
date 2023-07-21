@@ -7,7 +7,7 @@ type TProtectedRoute = {
     children: ReactNode;
 }
 
-const ProtectedRoute: React.FC<TProtectedRoute> = (props: TProtectedRoute): any => {
+const ProtectedRoute: React.FC<TProtectedRoute> = ({children}: TProtectedRoute): any => {
     const {isAuth} = useAppSelector((store) => store.user);
     const anonymous = false;
     const location = useLocation();
@@ -21,7 +21,7 @@ const ProtectedRoute: React.FC<TProtectedRoute> = (props: TProtectedRoute): any 
         return <Navigate to="/login" state={{ from: location}}/>;
     }
 
-    return props.children;
+    return children;
 }
 
 export default ProtectedRoute;

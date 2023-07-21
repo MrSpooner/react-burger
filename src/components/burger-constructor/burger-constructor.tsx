@@ -6,11 +6,13 @@ import {nanoid} from '@reduxjs/toolkit';
 import {addBun, addOtherIngredient, resetConstructor} from "../../services/reduxToolkit/orderConstructor";
 import {getOrder} from "../../services/reduxToolkit/order";
 import {useDrop} from "react-dnd";
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import Modal from "../modal/modal";
 import {useAppDispatch, useAppSelector} from '../../utils/useData';
 import OrderDetails from "../modal-order-details/order-details";
 import {TIngredient, TItemIngredient} from "../../utils/types";
+import {Link} from "react-router-dom";
+import {ConstructorElement} from '@ya.praktikum/react-developer-burger-ui-components';
 
 function BurgerConstructor() {
     const dispatch = useAppDispatch();
@@ -20,6 +22,7 @@ function BurgerConstructor() {
     const bun = useAppSelector(store => store.orderConstructor.bun);
     const navigate = useNavigate();
     const {isAuth} = useAppSelector((state) => state.user);
+    const location = useLocation();
 
     const onClick = () => {
         if (isAuth) {
@@ -95,7 +98,17 @@ function BurgerConstructor() {
                 )}
 
                 {bun !== null && (
-                    <ConstructorItem data={bun} type='top'/>
+                    <div>
+                        <Link to={`/ingredient/${bun._id}`} state={{background: location}}>
+                        <ConstructorElement
+                            type="top"
+                            isLocked={true}
+                            text={bun.name + " (верх)"}
+                            price={bun.price}
+                            thumbnail={bun.image}
+                        />
+                        </Link>
+                    </div>
                 )}
 
                 <div className={`${Items.ingredients} custom-scroll`}>
@@ -106,7 +119,17 @@ function BurgerConstructor() {
                 </div>
 
                 {bun !== null && (
-                    <ConstructorItem data={bun} type='bottom'/>
+                    <div>
+                    <Link to={`/ingredient/${bun._id}`} state={{background: location}}>
+                        <ConstructorElement
+                            type="bottom"
+                            isLocked={true}
+                            text={bun.name + " (низ)"}
+                            price={bun.price}
+                            thumbnail={bun.image}
+                        />
+                    </Link>
+                    </div>
                 )}
 
                 {(price > 0) && (

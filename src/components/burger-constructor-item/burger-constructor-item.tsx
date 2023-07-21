@@ -5,14 +5,7 @@ import {useDrag} from "react-dnd";
 import {useAppDispatch} from '../../utils/useData';
 import {deleteIngredient, sortIngredients} from "../../services/reduxToolkit/orderConstructor";
 import {Link, useLocation} from "react-router-dom";
-import {TIngredient, TItemIngredient} from "../../utils/types";
-
-type TConstructorType = {
-    data: any,
-    type?:  "top" | "bottom" | undefined,
-    index?: number,
-    myId?: string
-}
+import {TIngredient, TConstructorType} from "../../utils/types";
 
 const ConstructorItem: React.FC<TConstructorType> = (data: TConstructorType) => {
     const location = useLocation();
@@ -21,7 +14,7 @@ const ConstructorItem: React.FC<TConstructorType> = (data: TConstructorType) => 
     const dispatch = useAppDispatch();
     const ref = React.useRef(null);
 
-    const delConstructorItem = (item: TItemIngredient) => {
+    const delConstructorItem = (item: TConstructorType) => {
         dispatch(deleteIngredient(item));
     };
 
@@ -31,8 +24,7 @@ const ConstructorItem: React.FC<TConstructorType> = (data: TConstructorType) => 
             const dropItem = item.index;
             const draggedItem = data.index;
 
-            dispatch(sortIngredients({ dropItem, draggedItem }),
-            );
+            dispatch(sortIngredients({ dropItem, draggedItem }));
             item.index = draggedItem;
         }
     });
@@ -46,17 +38,15 @@ const ConstructorItem: React.FC<TConstructorType> = (data: TConstructorType) => 
 
     return (
         <div ref={ref} draggable={true}>
-
-            {data.data  && <Link to={`/ingredient/${data.data._id}`}
-                  state={{background: location}}>
-                <DragIcon type="primary" />
+            {data.data && <Link to={`/ingredient/${data.data._id}`} state={{background: location}}>
+                {!data.type && <DragIcon type="primary" />}
                 <ConstructorElement
                     type={data.type}
                     text={data.type === 'top' ? `${data.data.name}` + ' (верх)'
                         : data.type === 'bottom' ? `${data.data.name}` + ' (низ)' : data.data.name}
                     price={data.data.price}
                     thumbnail={data.data.image_mobile}
-                    handleClose={() => delConstructorItem(data.data)}
+                    handleClose={() => delConstructorItem(data)}
                 />
             </Link>}
         </div>

@@ -43,3 +43,10 @@ export type TUserResponse = {
     refreshToken: string;
     user: { email: string; name: string };
 };
+
+export type TConstructorType = {
+    data: any,
+    type?:  "top" | "bottom" | undefined,
+    index?: number,
+    myId?: string
+}
