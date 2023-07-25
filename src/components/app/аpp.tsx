@@ -24,17 +24,19 @@ function App() {
     let background = location.state && location.state.background;
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
-
+    const getIngredients = React.useCallback(() => dispatch(getIngredientsAll()), [dispatch])
+    const refreshTkn = React.useCallback(() => dispatch(refreshToken()), [dispatch])
+    const user = React.useCallback(() => dispatch(getUser()), [dispatch])
 
     React.useEffect(() => {
-        dispatch(getIngredientsAll());
-    }, [dispatch]);
+        getIngredients();
+    }, [getIngredients]);
     React.useEffect(() => {
         if (!isAuth && localStorage.getItem("jwt")) {
-            dispatch(refreshToken());
-            dispatch(getUser());
+            refreshTkn();
+            user();
         }
-    }, [localStorage.getItem("jwt"), isAuth, dispatch]);
+    }, [refreshTkn, isAuth, user]);
 
     const closeModal = () => {
         navigate(-1);
@@ -47,14 +49,14 @@ function App() {
             <Routes location={background || location}>
                 <Route path="/" element={<HomePage/>}/>
                 <Route path='/ingredient/:idCard' element={<IngredientDetails/>}/>
-                <Route path="/login" element={<Login/>}/>
+                <Route path="/login" element={<ProtectedRoute onlyUnAuth><Login/></ProtectedRoute>}/>
                 <Route path="/feed" element={<Feed/>}/>
                 <Route path='/feed/:number' element={<OrderDetails/>}/>
                 <Route path="/profile/orders" element={<ProtectedRoute><ProfileOrdersTab/></ProtectedRoute>}/>
                 <Route path='/profile/orders/:number' element={<ProtectedRoute><OrderDetails/></ProtectedRoute>}/>
-                <Route path="/register" element={<Register/>}/>
-                <Route path="/forgot-password" element={<ForgotPassword/>}/>
-                <Route path="/reset-password" element={<ResetPassword/>}/>
+                <Route path="/register" element={<ProtectedRoute onlyUnAuth><Register/></ProtectedRoute>}/>
+                <Route path="/forgot-password" element={<ProtectedRoute onlyUnAuth><ForgotPassword/></ProtectedRoute>}/>
+                <Route path="/reset-password" element={<ProtectedRoute onlyUnAuth><ResetPassword/></ProtectedRoute>}/>
                 <Route path='/profile' element={<ProtectedRoute><Profile/></ProtectedRoute>}/>
                 <Route path="*" element={<h1>404</h1>}/>
             </Routes>
