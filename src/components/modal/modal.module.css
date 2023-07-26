@@ -4,6 +4,7 @@
     left: 50%;
     margin-top: -200px;
     margin-left: 300px;
+    z-index: 998;
 }
 
 .background {
@@ -16,4 +17,5 @@
     width: 720px;
     border-radius: 40px;
     background-color: #1C1C21;
+    z-index: 998;
 }

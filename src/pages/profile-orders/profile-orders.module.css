@@ -1,0 +1,12 @@
+.main {
+    position: relative;
+    margin-left: 160px;
+    max-height: 912px;
+    overflow-y: auto;
+}
+
+.ulOrderList {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
