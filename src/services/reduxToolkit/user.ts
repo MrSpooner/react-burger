@@ -115,11 +115,13 @@ export const logout = createAsyncThunk("user/logout", async () => {
     return res;
 });
 
-export const refreshToken = createAsyncThunk("user/refreshToken", async () => {
+export const refreshToken = createAsyncThunk("user/refreshToken", async (callback: any) => {
         const res = await updateToken();
 
         setCookie("token", res.accessToken, {expires: 1200});
         localStorage.setItem("jwt", res.refreshToken);
+
+        await callback();
 
         return res;
     }

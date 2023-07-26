@@ -25,7 +25,7 @@ function App() {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const getIngredients = React.useCallback(() => dispatch(getIngredientsAll()), [dispatch])
-    const refreshTkn = React.useCallback(() => dispatch(refreshToken()), [dispatch])
+    const refreshTkn = React.useCallback((user: any) => dispatch(refreshToken(user)), [dispatch])
     const user = React.useCallback(() => dispatch(getUser()), [dispatch])
 
     React.useEffect(() => {
@@ -33,8 +33,7 @@ function App() {
     }, [getIngredients]);
     React.useEffect(() => {
         if (!isAuth && localStorage.getItem("jwt")) {
-            refreshTkn();
-            user();
+            refreshTkn(user);
         }
     }, [refreshTkn, isAuth, user]);
 
