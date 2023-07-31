@@ -33,8 +33,8 @@ const Modal: React.FC<TModal> = (data: TModal) => {
             <ModalOverlay closeModal = {data.closeModal}/>
 
             <div className={Style.background}>
-                <div className={Style.close}>
-                    <CloseIcon type="primary" onClick={data.closeModal}/>
+                <div className={Style.close} data-cy={"ModalButtonClose"}>
+                    <CloseIcon type="primary" onClick={data.closeModal} />
                 </div>
             </div>
 

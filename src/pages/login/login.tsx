@@ -50,6 +50,7 @@ function Login() {
                     error={false}
                     errorText={"Ошибка"}
                     size={"default"}
+                    data-cy={'email'}
                 />
 
                 <Input
@@ -65,6 +66,7 @@ function Login() {
                     errorText={"Ошибка"}
                     size={"default"}
                     extraClass='m-5'
+                    data-cy={'pass'}
                 />
 
                 <Button htmlType="submit" type="primary" size="medium">Войти</Button>

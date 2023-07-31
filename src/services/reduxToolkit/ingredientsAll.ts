@@ -8,7 +8,7 @@ interface ISliceState  {
     isIngredientsRequestError: boolean;
 }
 
-const initialState: ISliceState = {
+export const initialState: ISliceState = {
     ingredientsAll: [],
     isIngredientsRequest: false,
     isIngredientsRequestError: false,

@@ -90,7 +90,7 @@ function BurgerConstructor() {
 
     return (
         <div>
-            <div className={`${Items.element} mt-25`} ref={itemsDrop}>
+            <div className={`${Items.element} mt-25`} ref={itemsDrop} data-cy={"ConstructorContainer"}>
                 {bun === null && constructorItems?.length === 0 && (
                     <div ref={emptyDrop}>
                         <div className={Items.empty}></div>

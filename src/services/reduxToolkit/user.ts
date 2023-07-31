@@ -49,7 +49,7 @@ interface IInitialState {
     isAuth: boolean;
 }
 
-const initialState: IInitialState = {
+export const initialState: IInitialState = {
     user: {
         name: "",
         email: "",

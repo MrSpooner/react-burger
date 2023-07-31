@@ -1,12 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { TIngredient, TItemIngredient, TConstructorType } from "../../utils/types";
 
-interface IConstructorState {
+export interface IConstructorState {
     bun: TIngredient | null ;
     constructorItems?: TItemIngredient[];
 }
 
-const initialState = {
+export const initialState = {
     bun: null,
     constructorItems: [],
 } as IConstructorState

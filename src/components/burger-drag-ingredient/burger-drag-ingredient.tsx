@@ -24,8 +24,9 @@ const BurgerDragIngredient: React.FC<TIngredientBurger> = (data: TIngredientBurg
             to={`/ingredient/${data.data._id}`}
             state={{background: location}}
             className={Style.card}
+            data-cy={"IngredientLink"}
         >
-            <div ref={itemRef} draggable={true}>
+            <div ref={itemRef} draggable={true} data-cy={"BurgerIngredient"} >
 
                 {data.count && <Counter count={data.count} size="default"/>}
 

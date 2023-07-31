@@ -2,7 +2,7 @@ import React, {ReactNode} from 'react';
 import Tab from './burger-ingredients-tab.module.css';
 import {useMemo} from "react";
 import BurgerDragIngredient from '../burger-drag-ingredient/burger-drag-ingredient'
-import { useAppSelector } from '../../utils/useData';
+import {useAppSelector} from '../../utils/useData';
 import {TIngredient, TItemIngredient} from "../../utils/types";
 
 type TIngredientBurger = {
@@ -41,12 +41,23 @@ const BurgerIngredientsTab: React.FC<TIngredientBurger> = (prop: TIngredientBurg
             <p className="text text_type_main-medium" ref={prop.sendRef}>
                 {prop.children}
             </p>
+            {prop.children === "Булки" && (
+                <div className={Tab.stack} data-cy={'bun'}>
+                    {prop.data.map((item, index) => <BurgerDragIngredient data={item}
+                                                                          count={ingredientCount[item._id]}
+                                                                          key={index}/>)}
+                </div>
+            )
+            }
 
-            <div className={Tab.stack}>
-                {prop.data.map((item, index) => <BurgerDragIngredient data={item}
-                                                                      count={ingredientCount[item._id]}
-                                                                      key={index}/>)}
-            </div>
+            {prop.children !== "Булки" && (
+                <div className={Tab.stack} data-cy={'main'}>
+                    {prop.data.map((item, index) => <BurgerDragIngredient data={item}
+                                                                          count={ingredientCount[item._id]}
+                                                                          key={index}/>)}
+                </div>
+            )
+            }
         </div>
     );
 }

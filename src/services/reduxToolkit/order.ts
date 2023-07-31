@@ -13,7 +13,7 @@ type TOrdersState = {
     chosenOrderFailed?: boolean;
 }
 
-const initialState: TOrdersState = {
+export const initialState: TOrdersState = {
     number: 0,
     order: [],
 
