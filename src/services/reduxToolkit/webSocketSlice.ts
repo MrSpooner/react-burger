@@ -11,7 +11,7 @@ type TWsSliceState = {
     wsConnected: boolean
 }
 
-const initialState: TWsSliceState = {
+export const initialState: TWsSliceState = {
     total: 0,
     totalToday: 0,
 
