@@ -1,0 +1,66 @@
+.card {
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    min-height: 214px;
+    width: 584px;
+    background: #1C1C21;
+    color: #F2F2F3;
+    border-radius: 40px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 0 29px 0;
+}
+
+.ingredients {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.unList {
+    display: flex;
+    list-style-type: none;
+}
+
+.unList :nth-child(6) > img {
+    opacity: 0.6;
+}
+
+.item {
+    position: relative;
+    width: 62px;
+    height: 62px;
+    border: double 2px transparent;
+    background-image: linear-gradient(#131316, #131316),
+    linear-gradient(to top right, #801AB2, #4C4CFF);
+    background-origin: border-box;
+    background-clip: content-box, border-box;
+    border-radius: 50%;
+    margin-left: -18px;
+}
+
+.image {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+
+.overFlow {
+    position: absolute;
+    font-family: "JetBrainsMono", Arial, sans-serif;
+    right: 22px;
+    top: 20px;
+}
+
+.total {
+    display: flex;
+    position: absolute;
+    right: 0;
+}
